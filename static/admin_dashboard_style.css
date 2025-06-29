@@ -405,3 +405,125 @@ ul {
         gap: 15px;
     }
 }
+
+/* --- Styles for Action Buttons --- */
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #4a5ae5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(74, 90, 229, 0.3);
+    border: none;
+    cursor: pointer;
+}
+
+.button-primary:hover {
+    background-color: #3842c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 90, 229, 0.4);
+}
+
+.button-danger {
+    background: none;
+    border: none;
+    color: #f5365c;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.button-danger:hover {
+    color: #c02848;
+    text-decoration: underline;
+}
+
+/* --- Styles for Stacked Forms in Admin Panel --- */
+.stacked-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row-admin label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.stacked-form input[type="text"],
+.stacked-form input[type="number"],
+.stacked-form input[type="datetime-local"] {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.stacked-form input:focus {
+    outline: none;
+    border-color: #4a5ae5;
+    box-shadow: 0 0 0 3px rgba(74, 90, 229, 0.2);
+}
+
+/* --- Styles for Action Buttons --- */
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #4a5ae5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(74, 90, 229, 0.3);
+    border: none;
+    cursor: pointer;
+}
+
+.button-primary:hover {
+    background-color: #3842c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 90, 229, 0.4);
+}
+
+.button-danger {
+    background: none;
+    border: none;
+    color: #f5365c;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.button-danger:hover {
+    color: #c02848;
+    text-decoration: underline;
+}
+
+/* --- Style for Passenger List in Booking Table --- */
+.passenger-list-admin {
+    font-size: 0.85em;
+    padding-left: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.passenger-list-admin li {
+    margin-bottom: 5px;
+    line-height: 1.3;
+}

@@ -4,77 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Pemesanan</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Manajemen Pemesanan</h1>
-        <nav>
-            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
-            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
-            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
-            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
-            <a href="{{ url_for('logout') }}">Logout</a>
-        </nav>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <i class="fa-solid fa-plane" style="font-size: 2em; color: #4a5ae5;"></i>
+                <span class="logo-text">fLy.SyRa</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('admin_flights') }}"><i class="fas fa-plane"></i> Manajemen Penerbangan</a></li>
+                    <li><a href="{{ url_for('admin_users') }}"><i class="fas fa-users"></i> Manajemen Pengguna</a></li>
+                    <li><a href="{{ url_for('admin_bookings') }}" class="active"><i class="fas fa-ticket-alt"></i> Manajemen Pemesanan</a></li>
+                    <li style="margin-top: 30px;"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
-            {% endif %}
-        {% endwith %}
+            </nav>
+        </aside>
 
-        {% if bookings %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>User</th>
-                        <th>Penerbangan</th>
-                        <th>Dari</th>
-                        <th>Ke</th>
-                        <th>Tgl Keberangkatan</th>
-                        <th>Jumlah Tiket</th>
-                        <th>Total Harga</th>
-                        <th>Status</th>
-                        <th>Detail Penumpang</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for booking in bookings %}
-                    <tr>
-                        <td>{{ booking._id }}</td>
-                        <td>{{ booking.user_details.username if booking.user_details else 'N/A' }}</td>
-                        <td>{{ booking.flight_details.flight_number if booking.flight_details else 'N/A' }} ({{ booking.flight_details.airline if booking.flight_details else 'N/A' }})</td>
-                        <td>{{ booking.flight_details.origin_airport if booking.flight_details else 'N/A' }}</td>
-                        <td>{{ booking.flight_details.destination_airport if booking.flight_details else 'N/A' }}</td>
-                        <td>
-                            {% if booking.flight_details and booking.flight_details.departure_time %}
-                                {{ booking.flight_details.departure_time.strftime('%Y-%m-%d %H:%M') }}
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                        <td>{{ booking.number_of_tickets }}</td>
-                        <td>Rp {{ "{:,.0f}".format(booking.total_price) }}</td>
-                        <td>{{ booking.status }}</td>
-                        <td>
-                            <ul>
-                            {% for passenger in booking.passengers %}
-                                <li>{{ passenger.name }} ({{ passenger.id_number }})</li>
-                            {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="welcome-text">Manajemen Pemesanan</div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Type here...">
+                    </div>
+                    {% if 'user_id' in session %}
+                        <a href="{{ url_for('logout') }}" style="color: #666;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" style="color: #666;"><i class="fas fa-user-circle"></i> Sign In</a>
+                    {% endif %}
+                </div>
+            </header>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
                     {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>Tidak ada pemesanan yang tersedia.</p>
-        {% endif %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <section class="dashboard-card animated-section">
+                <div class="dashboard-card-header">
+                    <h2 class="card-title">Daftar Semua Pemesanan</h2>
+                </div>
+                
+                {% if bookings %}
+                    <div class="table-responsive">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>User</th>
+                                    <th>Penerbangan</th>
+                                    <th>Dari</th>
+                                    <th>Ke</th>
+                                    <th>Tgl Keberangkatan</th>
+                                    <th>Jumlah Tiket</th>
+                                    <th>Total Harga</th>
+                                    <th>Status</th>
+                                    <th>Detail Penumpang</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr>
+                                    <td>{{ booking._id }}</td>
+                                    <td>{{ booking.user_details.username if booking.user_details else 'N/A' }}</td>
+                                    <td>{{ booking.flight_details.flight_number if booking.flight_details else 'N/A' }} ({{ booking.flight_details.airline if booking.flight_details else 'N/A' }})</td>
+                                    <td>{{ booking.flight_details.origin_airport if booking.flight_details else 'N/A' }}</td>
+                                    <td>{{ booking.flight_details.destination_airport if booking.flight_details else 'N/A' }}</td>
+                                    <td>
+                                        {% if booking.flight_details and booking.flight_details.departure_time %}
+                                            {{ booking.flight_details.departure_time.strftime('%Y-%m-%d %H:%M') }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ booking.number_of_tickets }}</td>
+                                    <td>Rp {{ "{:,.0f}".format(booking.total_price) }}</td>
+                                    <td>{{ booking.status }}</td>
+                                    <td>
+                                        <ul class="passenger-list-admin">
+                                        {% for passenger in booking.passengers %}
+                                            <li>{{ passenger.name }} ({{ passenger.id_number }})</li>
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>Tidak ada pemesanan yang tersedia.</p>
+                {% endif %}
+            </section>
+        </main>
     </div>
 </body>
 </html>

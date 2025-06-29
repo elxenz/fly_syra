@@ -4,57 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Penerbangan Baru</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Tambah Penerbangan Baru</h1>
-        <nav>
-            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
-            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
-            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
-            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
-            <a href="{{ url_for('logout') }}">Logout</a>
-        </nav>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <i class="fa-solid fa-plane" style="font-size: 2em; color: #4a5ae5;"></i>
+                <span class="logo-text">fLy.SyRa</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('admin_flights') }}" class="active"><i class="fas fa-plane"></i> Manajemen Penerbangan</a></li>
+                    <li><a href="{{ url_for('admin_users') }}"><i class="fas fa-users"></i> Manajemen Pengguna</a></li>
+                    <li><a href="{{ url_for('admin_bookings') }}"><i class="fas fa-ticket-alt"></i> Manajemen Pemesanan</a></li>
+                    <li style="margin-top: 30px;"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
-            {% endif %}
-        {% endwith %}
+            </nav>
+        </aside>
 
-        <form action="{{ url_for('admin_add_flight') }}" method="post">
-            <label for="flight_number">Nomor Penerbangan:</label>
-            <input type="text" id="flight_number" name="flight_number" required>
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="welcome-text">Tambah Penerbangan Baru</div>
+                <div class="header-right">
+                    <a href="{{ url_for('logout') }}" style="color: #666;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </header>
 
-            <label for="origin_airport">Bandara Asal (IATA Code):</label>
-            <input type="text" id="origin_airport" name="origin_airport" required>
+            <section class="dashboard-card animated-section" style="max-width: 700px; margin: 0 auto;">
+                <div class="dashboard-card-header">
+                    <h2 class="card-title">Formulir Penerbangan</h2>
+                </div>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul class="flashes">
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
 
-            <label for="destination_airport">Bandara Tujuan (IATA Code):</label>
-            <input type="text" id="destination_airport" name="destination_airport" required>
+                <form action="{{ url_for('admin_add_flight') }}" method="post" class="stacked-form">
+                    <div class="form-row-admin">
+                        <label for="flight_number">Nomor Penerbangan:</label>
+                        <input type="text" id="flight_number" name="flight_number" required>
+                    </div>
 
-            <label for="departure_time">Waktu Keberangkatan:</label>
-            <input type="datetime-local" id="departure_time" name="departure_time" required>
+                    <div class="form-row-admin">
+                        <label for="origin_airport">Bandara Asal (IATA Code):</label>
+                        <input type="text" id="origin_airport" name="origin_airport" required>
+                    </div>
 
-            <label for="arrival_time">Waktu Kedatangan:</label>
-            <input type="datetime-local" id="arrival_time" name="arrival_time" required>
+                    <div class="form-row-admin">
+                        <label for="destination_airport">Bandara Tujuan (IATA Code):</label>
+                        <input type="text" id="destination_airport" name="destination_airport" required>
+                    </div>
 
-            <label for="airline">Maskapai:</label>
-            <input type="text" id="airline" name="airline" required>
+                    <div class="form-row-admin">
+                        <label for="departure_time">Waktu Keberangkatan:</label>
+                        <input type="datetime-local" id="departure_time" name="departure_time" required>
+                    </div>
 
-            <label for="total_seats">Total Kursi:</label>
-            <input type="number" id="total_seats" name="total_seats" min="1" required>
+                    <div class="form-row-admin">
+                        <label for="arrival_time">Waktu Kedatangan:</label>
+                        <input type="datetime-local" id="arrival_time" name="arrival_time" required>
+                    </div>
 
-            <label for="price">Harga per Tiket:</label>
-            <input type="number" id="price" name="price" step="0.01" min="0.01" required>
+                    <div class="form-row-admin">
+                        <label for="airline">Maskapai:</label>
+                        <input type="text" id="airline" name="airline" required>
+                    </div>
 
-            <button type="submit">Tambah Penerbangan</button>
-        </form>
-        <a href="{{ url_for('admin_flights') }}">Kembali ke Daftar Penerbangan</a>
+                    <div class="form-row-admin">
+                        <label for="total_seats">Total Kursi:</label>
+                        <input type="number" id="total_seats" name="total_seats" min="1" required>
+                    </div>
+
+                    <div class="form-row-admin">
+                        <label for="price">Harga per Tiket:</label>
+                        <input type="number" id="price" name="price" step="0.01" min="0.01" required>
+                    </div>
+                    
+                    <button type="submit" class="button-primary" style="margin-top: 20px;"><i class="fas fa-plus"></i> Tambah Penerbangan</button>
+                    <a href="{{ url_for('admin_flights') }}" style="margin-top: 10px; display: block; text-align: center;">Kembali ke Daftar Penerbangan</a>
+                </form>
+            </section>
+        </main>
     </div>
 </body>
 </html>

@@ -51,12 +51,12 @@ a:hover {
     width: 90%;
     max-width: 1200px;
     margin: 20px auto;
-    background-color: #001570;
+    background-color: #fff;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
-/* --- Perbarui gaya container untuk form login dan register --- */
+/* --- Perbarui gaya container untuk form login --- */
 .container {
     background-color: rgba(255, 255, 255, 0.95); /* Sedikit transparan agar latar belakang gelap terlihat */
     backdrop-filter: blur(10px); /* Efek blur */
@@ -72,15 +72,15 @@ a:hover {
 /* --- Header / Navbar untuk semua halaman user --- */
 /* --- Perbaiki tampilan navbar untuk background solid --- */
 header {
-    background-color: rgba(255, 255, 255, 0.15); /* Latar belakang semi-transparan */
-    backdrop-filter: blur(15px); /* Efek blur */
-    -webkit-backdrop-filter: blur(15px);
+    background-color: #0a192f; /* Ubah warna menjadi biru tua solid */
+    backdrop-filter: none; /* Hapus efek blur */
+    -webkit-backdrop-filter: none;
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Bayangan lebih gelap */
+    border-bottom: none; /* Hapus border */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -535,7 +535,7 @@ a.nav-link-item.active .fas {
     scroll-snap-align: start;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     background-color: #f0f2f5;
-    animation: fadeInUp 0.8s ease-out; /* Tambahkan animasi fade-in */
+    animation: fadeInUp 0.8s ease-out;
     animation-fill-mode: backwards;
 }
 /* Tambahkan delay untuk setiap kartu untuk efek staggered */
@@ -632,7 +632,7 @@ a.nav-link-item.active .fas {
     justify-content: space-between;
     gap: 20px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    animation: fadeInUp 0.5s ease-out; /* Animasi fade-in untuk kartu penerbangan */
+    animation: fadeInUp 0.5s ease-out;
     animation-fill-mode: backwards;
 }
 /* Efek staggered animation untuk kartu penerbangan */
@@ -848,14 +848,14 @@ a.nav-link-item.active .fas {
     .search-input-form-integrated {
         flex-direction: column;
         align-items: stretch;
-        gap: 25px; /* Tambahkan jarak vertikal */
+        gap: 25px;
     }
     .input-field-group-integrated {
         min-width: unset;
         width: 100%;
     }
     .input-field-group-integrated.separator-arrow {
-        display: none; /* Sembunyikan panah di mode kolom */
+        display: none;
     }
     .search-action-button-integrated {
         min-width: unset;

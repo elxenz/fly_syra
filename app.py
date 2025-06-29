@@ -138,7 +138,7 @@ def search_flights():
         # Buat rentang waktu untuk mencari penerbangan di seluruh hari itu
         end_of_day = departure_date + timedelta(days=1)
     except ValueError:
-        flash('Format tanggal tidak valid. Gunakan YYYY-MM-DD.', 'error')
+        flash('Format tanggal tidak valid. Gunakanんですね-MM-DD.', 'error')
         return redirect(url_for('cari_jadwal')) # Redirect ke halaman cari_jadwal jika format tanggal salah
 
     # Query MongoDB untuk mencari penerbangan
@@ -270,10 +270,39 @@ def booking_history():
 @app.route('/admin_dashboard')
 @admin_required 
 def admin_dashboard():
+    # Data tracking yang sudah ada
     total_flights = flights_collection.count_documents({})
     total_users = users_collection.count_documents({})
     total_bookings = bookings_collection.count_documents({})
     
+    # --- Data tracking baru untuk metrik dashboard ---
+    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    last_week = today - timedelta(weeks=1)
+    last_quarter_start = datetime(today.year, (today.month - 1) // 3 * 3 + 1, 1)
+
+    # Today's Money (Total pendapatan hari ini)
+    today_bookings_pipeline = [
+        {"$match": {"booking_date": {"$gte": today}}},
+        {"$group": {"_id": None, "total_price": {"$sum": "$total_price"}}}
+    ]
+    today_money_result = list(bookings_collection.aggregate(today_bookings_pipeline))
+    today_money = today_money_result[0]['total_price'] if today_money_result else 0
+
+    # Sales this month (Total pendapatan bulan ini)
+    this_month_start = today.replace(day=1)
+    this_month_bookings_pipeline = [
+        {"$match": {"booking_date": {"$gte": this_month_start}}},
+        {"$group": {"_id": None, "total_price": {"$sum": "$total_price"}}}
+    ]
+    this_month_sales_result = list(bookings_collection.aggregate(this_month_bookings_pipeline))
+    this_month_sales = this_month_sales_result[0]['total_price'] if this_month_sales_result else 0
+    
+    # New Users this week (Pengguna baru minggu ini)
+    new_users_week = users_collection.count_documents({'created_at': {'$gte': last_week}})
+
+    # New Clients last quarter (Pengguna baru kuartal ini)
+    new_clients_quarter = users_collection.count_documents({'created_at': {'$gte': last_quarter_start}})
+
     # Contoh data untuk laporan (top 5 flights by tickets booked)
     top_flights_pipeline = [
         {"$group": {"_id": "$flight_id", "count": {"$sum": "$number_of_tickets"}}},
@@ -297,6 +326,10 @@ def admin_dashboard():
                            total_flights=total_flights, 
                            total_users=total_users, 
                            total_bookings=total_bookings,
+                           today_money=today_money,
+                           this_month_sales=this_month_sales,
+                           new_users_week=new_users_week,
+                           new_clients_quarter=new_clients_quarter,
                            top_flights=top_flights)
 
 # 2. Manajemen Penerbangan

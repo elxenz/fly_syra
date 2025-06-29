@@ -4,107 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .card {
-            background-color: #e6f2ff; /* Light blue */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .card h3 {
-            color: #0056b3;
-            margin-bottom: 10px;
-        }
-        .card p {
-            font-size: 2em;
-            font-weight: bold;
-            color: #007bff;
-        }
-        .report-section {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .report-section h2 {
-            margin-top: 0;
-            color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Dashboard Admin</h1>
-        <nav>
-            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
-            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
-            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
-            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
-            <a href="{{ url_for('logout') }}">Logout</a>
-        </nav>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <i class="fa-solid fa-plane" style="font-size: 2em; color: #4a5ae5;"></i>
+                <span class="logo-text">fLy.SyRa</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin_dashboard') }}" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('admin_flights') }}"><i class="fas fa-plane"></i> Manajemen Penerbangan</a></li>
+                    <li><a href="{{ url_for('admin_users') }}"><i class="fas fa-users"></i> Manajemen Pengguna</a></li>
+                    <li><a href="{{ url_for('admin_bookings') }}"><i class="fas fa-ticket-alt"></i> Manajemen Pemesanan</a></li>
+                    <li style="margin-top: 30px;"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
-            {% endif %}
-        {% endwith %}
+            </nav>
+        </aside>
 
-        <div class="summary-cards">
-            <div class="card">
-                <h3>Total Penerbangan</h3>
-                <p>{{ total_flights }}</p>
-            </div>
-            <div class="card">
-                <h3>Total Pengguna</h3>
-                <p>{{ total_users }}</p>
-            </div>
-            <div class="card">
-                <h3>Total Pemesanan</h3>
-                <p>{{ total_bookings }}</p>
-            </div>
-        </div>
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="welcome-text">Halo, Admin!</div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Type here...">
+                    </div>
+                    <div class="user-profile">
+                        <i class="fas fa-user-circle"></i>
+                        <span class="username">{{ session.get('username', 'Admin') }}</span>
+                </div>
+            </header>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
 
-        <div class="report-section">
-            <h2>Penerbangan Terlaris (Top 5 berdasarkan jumlah tiket)</h2>
-            {% if top_flights %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nomor Penerbangan</th>
-                            <th>Maskapai</th>
-                            <th>Dari</th>
-                            <th>Ke</th>
-                            <th>Tiket Terpesan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for flight in top_flights %}
-                        <tr>
-                            <td>{{ flight.flight_number }}</td>
-                            <td>{{ flight.airline }}</td>
-                            <td>{{ flight.origin }}</td>
-                            <td>{{ flight.destination }}</td>
-                            <td>{{ flight.tickets_booked }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>Tidak ada data penerbangan terlaris saat ini.</p>
-            {% endif %}
-        </div>
+            <section class="summary-cards-grid">
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <span class="title">Total Penerbangan</span>
+                        <div class="icon-box bg-blue"><i class="fas fa-plane"></i></div>
+                    </div>
+                    <div class="value">{{ total_flights }}</div>
+                    <div class="summary-card-footer">
+                        <span class="change-percent positive">+85%</span>
+                        <span>since yesterday</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <span class="title">Total Pengguna</span>
+                        <div class="icon-box bg-green"><i class="fas fa-users"></i></div>
+                    </div>
+                    <div class="value">{{ total_users }}</div>
+                    <div class="summary-card-footer">
+                        <span class="change-percent positive">+3%</span>
+                        <span>since last week</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <span class="title">Total Pemesanan</span>
+                        <div class="icon-box bg-red"><i class="fas fa-ticket-alt"></i></div>
+                    </div>
+                    <div class="value">{{ total_bookings }}</div>
+                    <div class="summary-card-footer">
+                        <span class="change-percent negative">-2%</span>
+                        <span>since last quarter</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <span class="title">Pemesanan Bulan Ini</span>
+                        <div class="icon-box bg-orange"><i class="fas fa-chart-bar"></i></div>
+                    </div>
+                    <div class="value">Rp 103,430</div>
+                    <div class="summary-card-footer">
+                        <span class="change-percent positive">+9%</span>
+                        <span>than last month</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="main-grid">
+                <div class="dashboard-card animated-section">
+                    <div class="dashboard-card-header">
+                        <h2 class="card-title">Sales Overview</h2>
+                        <p class="card-subtitle">4% more in 2021</p>
+                    </div>
+                    <div class="chart-container">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+
+                <div class="side-panel">
+                    <div class="dashboard-card side-card animated-section" style="animation-delay: 0.5s;">
+                        <div class="card-image">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="title">Get started with Argon</h3>
+                            <p class="text">There’s nothing I really wanted to do in life that I wasn't able to get good at.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card animated-section" style="animation-delay: 0.6s; margin-top: 30px;">
+                        <div class="dashboard-card-header">
+                            <h2 class="card-title">Categories</h2>
+                        </div>
+                        <ul class="category-list">
+                            <li><span class="icon"><i class="fas fa-mobile-alt"></i></span> Devices <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span></li>
+                            <li><span class="icon"><i class="fas fa-ticket-alt"></i></span> Tickets <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span></li>
+                            <li><span class="icon"><i class="fas fa-exclamation-triangle"></i></span> Error logs <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span></li>
+                            <li><span class="icon"><i class="fas fa-smile"></i></span> Happy users <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="dashboard-card animated-section" style="margin-top: 30px; animation-delay: 0.7s;">
+                <div class="dashboard-card-header">
+                    <h2 class="card-title">Sales by Country</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Sales</th>
+                                <th>Value</th>
+                                <th>Bounce</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if top_flights %}
+                            {% for flight in top_flights %}
+                            <tr>
+                                <td>{{ flight.origin }} - {{ flight.destination }}</td>
+                                <td>{{ flight.tickets_booked }}</td>
+                                <td>Rp {{ "{:,.0f}".format(flight.tickets_booked * 1000000) }}</td>
+                                <td>-</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4" style="text-align: center;">Tidak ada data penjualan saat ini.</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td>United States</td>
+                                <td>2500</td>
+                                <td>$230.900</td>
+                                <td>29.9%</td>
+                            </tr>
+                            <tr>
+                                <td>Germany</td>
+                                <td>3.900</td>
+                                <td>$440.000</td>
+                                <td>40.22%</td>
+                            </tr>
+                            <tr>
+                                <td>Great Britain</td>
+                                <td>1.400</td>
+                                <td>$190.700</td>
+                                <td>23.44%</td>
+                            </tr>
+                            <tr>
+                                <td>Brazil</td>
+                                <td>562</td>
+                                <td>$143.960</td>
+                                <td>32.14%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
     </div>
 </body>
 </html>

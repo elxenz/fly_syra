@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- Header / Navbar untuk index.html (Transparan & Futuristik) --- */
+header.main-page-header {
+    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparan */
+    backdrop-filter: blur(15px); /* Efek kaca buram (Glassmorphism) */
+    -webkit-backdrop-filter: blur(15px); /* Dukungan browser WebKit */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Bayangan yang lebih kuat */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Border transparan */
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between; /* Menjaga logo di kiri dan nav di kanan */
+    align-items: center;
+    position: absolute; /* Posisi absolut di atas hero */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    color: white; /* Warna teks di header */
+    transition: all 0.5s ease;
+}
+
+.app-logo-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: white; /* Warna logo putih */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Efek glow */
+    text-transform: uppercase;
+}
+
+.app-logo-brand .fa-plane {
+    margin-right: 8px;
+    font-size: 1.2em;
+    color: white; /* Warna ikon putih */
+    transition: transform 0.5s ease;
+}
+
+/* --- Efek link navigasi yang lebih dinamis --- */
+.main-page-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Menggunakan flexbox untuk list */
+    align-items: center;
+}
+
+.main-page-nav ul li {
+    margin-left: 25px;
+}
+
+a.nav-link-item {
+    color: white; /* Warna link putih */
+    font-weight: 500;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    position: relative;
+    transition: all 0.5s ease;
+}
+
+/* Efek underline yang muncul dari bawah */
+a.nav-link-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #F8B400; /* Warna aksen emas */
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.5s ease;
+}
+
+a.nav-link-item.active::after,
+a.nav-link-item:hover::after {
+    transform-origin: bottom left;
+    transform: scaleX(1);
+}
+
+a.nav-link-item:hover,
+a.nav-link-item.active {
+    color: #F8B400; /* Warna teks berubah saat di-hover/aktif */
+}
+
+/* Transisi warna ikon */
+a.nav-link-item .fas {
+    font-size: 1.2em;
+    color: white; /* Warna ikon link putih */
+    transition: color 0.5s ease;
+}
+
+a.nav-link-item:hover .fas,
+a.nav-link-item.active .fas {
+    color: #F8B400;
+}
+
+/* Gaya untuk pesan pengguna di navbar */
+.welcome-message-text {
+    color: white;
+    font-weight: 600;
+    font-size: 1.05em;
+    margin-right: 25px;
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.5s ease;
+}
+
+/* --- Keyframe untuk efek pulse pada logo --- */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.app-logo-brand:hover .fa-plane {
+    animation: pulse 1s infinite;
+}

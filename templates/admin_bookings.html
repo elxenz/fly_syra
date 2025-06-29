@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Pemesanan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Manajemen Pemesanan</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
+            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
+            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
+            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if bookings %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User</th>
+                        <th>Penerbangan</th>
+                        <th>Dari</th>
+                        <th>Ke</th>
+                        <th>Tgl Keberangkatan</th>
+                        <th>Jumlah Tiket</th>
+                        <th>Total Harga</th>
+                        <th>Status</th>
+                        <th>Detail Penumpang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking._id }}</td>
+                        <td>{{ booking.user_details.username if booking.user_details else 'N/A' }}</td>
+                        <td>{{ booking.flight_details.flight_number if booking.flight_details else 'N/A' }} ({{ booking.flight_details.airline if booking.flight_details else 'N/A' }})</td>
+                        <td>{{ booking.flight_details.origin_airport if booking.flight_details else 'N/A' }}</td>
+                        <td>{{ booking.flight_details.destination_airport if booking.flight_details else 'N/A' }}</td>
+                        <td>
+                            {% if booking.flight_details and booking.flight_details.departure_time %}
+                                {{ booking.flight_details.departure_time.strftime('%Y-%m-%d %H:%M') }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>{{ booking.number_of_tickets }}</td>
+                        <td>Rp {{ "{:,.0f}".format(booking.total_price) }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td>
+                            <ul>
+                            {% for passenger in booking.passengers %}
+                                <li>{{ passenger.name }} ({{ passenger.id_number }})</li>
+                            {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Tidak ada pemesanan yang tersedia.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

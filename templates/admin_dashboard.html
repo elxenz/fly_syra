@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background-color: #e6f2ff; /* Light blue */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card h3 {
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .report-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .report-section h2 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Admin</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
+            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
+            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
+            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Penerbangan</h3>
+                <p>{{ total_flights }}</p>
+            </div>
+            <div class="card">
+                <h3>Total Pengguna</h3>
+                <p>{{ total_users }}</p>
+            </div>
+            <div class="card">
+                <h3>Total Pemesanan</h3>
+                <p>{{ total_bookings }}</p>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h2>Penerbangan Terlaris (Top 5 berdasarkan jumlah tiket)</h2>
+            {% if top_flights %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nomor Penerbangan</th>
+                            <th>Maskapai</th>
+                            <th>Dari</th>
+                            <th>Ke</th>
+                            <th>Tiket Terpesan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for flight in top_flights %}
+                        <tr>
+                            <td>{{ flight.flight_number }}</td>
+                            <td>{{ flight.airline }}</td>
+                            <td>{{ flight.origin }}</td>
+                            <td>{{ flight.destination }}</td>
+                            <td>{{ flight.tickets_booked }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Tidak ada data penerbangan terlaris saat ini.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

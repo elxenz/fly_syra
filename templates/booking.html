@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Tiket fLy.SyRa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        function generatePassengerFields() {
+            const numTickets = document.getElementById('num_tickets').value;
+            const passengerDetailsDiv = document.getElementById('passenger_details');
+            passengerDetailsDiv.innerHTML = '';
+
+            const availableSeats = parseInt(document.getElementById('available_seats_hidden').value);
+
+            if (numTickets > 0 && numTickets <= availableSeats) {
+                for (let i = 1; i <= numTickets; i++) {
+                    const fieldSet = document.createElement('fieldset');
+                    fieldSet.innerHTML = `
+                        <legend>Penumpang ${i}</legend>
+                        <label for="passenger_name_${i}">Nama Lengkap:</label>
+                        <input type="text" id="passenger_name_${i}" name="passenger_name_${i}" required>
+                        <label for="passenger_id_number_${i}">No. KTP/Passport:</label>
+                        <input type="text" id="passenger_id_number_${i}" name="passenger_id_number_${i}" required>
+                    `;
+                    passengerDetailsDiv.appendChild(fieldSet);
+                }
+            } else if (numTickets > availableSeats) {
+                passengerDetailsDiv.innerHTML = '<p class="error">Jumlah tiket melebihi kursi yang tersedia.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', generatePassengerFields);
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-plane"></i> fLy.SyRa
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="{{ url_for('all_flights') }}" class="active"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
+                {% if 'user_id' in session %}
+                    <li><span class="welcome-text">Halo, {{ session['username'] }}!</span></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('booking_history') }}"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
+                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h1>Pesan Tiket Penerbangan</h1>
+        {% if flight %}
+            <h2>Detail Penerbangan</h2>
+            <p><strong>Penerbangan:</strong> {{ flight.flight_number }}</p>
+            <p><strong>Dari:</strong> {{ flight.origin_airport }}</p>
+            <p><strong>Ke:</strong> {{ flight.destination_airport }}</p>
+            <p><strong>Waktu Keberangkatan:</strong> {{ flight.departure_time.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>Waktu Kedatangan:</strong> {{ flight.arrival_time.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>Maskapai:</strong> {{ flight.airline }}</p>
+            <p><strong>Kursi Tersedia:</strong> {{ flight.available_seats }}</p>
+            <p><strong>Harga per Tiket:</strong> Rp {{ "{:,.0f}".format(flight.price) }}</p>
+
+            <h2>Form Pemesanan</h2>
+            <form action="{{ url_for('book_flight', flight_id=flight._id) }}" method="post">
+                <input type="hidden" id="available_seats_hidden" value="{{ flight.available_seats }}">
+
+                <label for="num_tickets">Jumlah Tiket:</label>
+                <input type="number" id="num_tickets" name="num_tickets" min="1" max="{{ flight.available_seats }}" required onchange="generatePassengerFields()" onkeyup="generatePassengerFields()">
+                <br>
+                <div id="passenger_details">
+                </div>
+                <button type="submit">Konfirmasi Pemesanan</button>
+            </form>
+        {% else %}
+            <p>Penerbangan tidak ditemukan.</p>
+        {% endif %}
+        <p style="text-align: center; margin-top: 20px;"><a href="{{ url_for('index') }}" class="button">Kembali ke Pencarian</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Pengguna</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Manajemen Pengguna</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
+            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
+            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
+            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if users %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <a href="{{ url_for('admin_edit_user', user_id=user._id) }}">Edit</a> |
+                            <form action="{{ url_for('admin_delete_user', user_id=user._id) }}" method="post" style="display:inline;" onsubmit="return confirm('Anda yakin ingin menghapus pengguna ini dan semua pemesanan terkait?');">
+                                <button type="submit" style="background: none; border: none; color: red; cursor: pointer; padding: 0; font-size: inherit;">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Tidak ada pengguna terdaftar.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,671 @@
+/* --- user_style.css --- */
+
+/* Import font Poppins dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- General Styles & Reset (untuk semua halaman user KECUALI index.html) --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    color: #333;
+    background-color: #f0f2f5; /* Warna latar belakang umum */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #34568B; /* Warna biru konsisten */
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2a416a;
+}
+
+/* --- Global Container (untuk halaman selain index.html) --- */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Header / Navbar (untuk semua halaman user) --- */
+/* (Catatan: Gaya ini akan digunakan oleh semua halaman HTML kecuali index.html) */
+header {
+    background-color: #ffffff;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #34568B;
+    text-transform: uppercase;
+}
+
+.logo img {
+    height: 30px;
+    margin-right: 8px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: #555;
+    font-weight: 500;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: #34568B;
+    border-bottom: 2px solid #34568B;
+}
+
+nav ul li a .fas, nav ul li a .fa-plane {
+    font-size: 1.2em;
+    color: #34568B;
+}
+
+.welcome-text {
+    color: #555;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+
+/* --- Flash Messages (untuk semua halaman user KECUALI index.html) --- */
+.flashes {
+    list-style-type: none;
+    padding: 15px 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 1200px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.flashes li {
+    margin-bottom: 8px;
+}
+
+.flashes .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flashes .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flashes .info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.flashes .warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* --- Flight Cards (Styles for All Flights & Search Results) --- */
+.flight-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Jarak antar kartu */
+    margin-top: 25px;
+    padding: 0; /* Pastikan tidak ada padding dari ul/ol default */
+    list-style: none; /* Hilangkan bullet point jika pakai ul */
+}
+
+.flight-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.flight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.airline-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px; /* Ruang untuk logo/nama maskapai */
+    text-align: center;
+    margin-right: 15px; /* Jarak dari detail penerbangan */
+}
+
+.airline-logo {
+    width: 60px; /* Ukuran logo */
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    border-radius: 50%; /* Jika logo bulat */
+    background-color: #f0f2f5; /* Latar belakang placeholder */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em; /* Untuk ikon placeholder */
+    color: #34568B;
+}
+
+.airline-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9em;
+}
+
+.flight-details-main {
+    flex-grow: 1; /* Ambil sisa ruang */
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Jarak antar blok waktu/rute */
+}
+
+.flight-time-route {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.flight-time-route .time {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #34568B; /* Warna biru baru */
+}
+
+.flight-time-route .airport {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #666;
+    margin-top: 2px;
+}
+
+.flight-duration-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.85em;
+    color: #888;
+    position: relative;
+    padding: 0 10px; /* Memberi ruang untuk garis */
+}
+
+.flight-duration-stop .duration {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.flight-duration-stop .line {
+    width: 100px; /* Panjang garis */
+    height: 2px;
+    background-color: #ddd;
+    border-radius: 1px;
+    position: relative;
+}
+
+.flight-duration-stop .line::before,
+.flight-duration-stop .line::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #34568B; /* Titik di ujung garis */
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.flight-duration-stop .line::before {
+    left: -4px;
+}
+
+.flight-duration-stop .line::after {
+    right: -4px;
+}
+
+.flight-duration-stop .stop-info {
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.flight-price-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Rata kanan */
+    min-width: 150px; /* Pastikan ruang cukup untuk harga & tombol */
+}
+
+.flight-price {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #F8B400; /* Warna aksen - Emas */
+    margin-bottom: 10px;
+}
+
+.flight-price small {
+    font-size: 0.5em;
+    font-weight: 400;
+    color: #666;
+}
+
+.choose-button {
+    background-color: #34568B; /* Warna biru baru */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(52, 86, 139, 0.3);
+    text-align: center;
+    width: 100%; /* Ambil lebar penuh container */
+    max-width: 150px; /* Batasi lebar tombol */
+}
+
+.choose-button:hover {
+    background-color: #2a416a; /* Warna biru hover */
+    transform: translateY(-2px);
+}
+
+/* --- Forms (Login, Register, Book Flight, dan Form Pencarian di cari_jadwal.html) --- */
+/* Ini adalah style form umum */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 550px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+form label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"],
+form input[type="datetime-local"],
+form input[type="number"],
+form select {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    color: #333;
+    width: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+    border-color: #34568B;
+    box-shadow: 0 0 0 3px rgba(52, 86, 139, 0.25);
+    outline: none;
+}
+
+form button[type="submit"] {
+    background-color: #34568B;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(52, 86, 139, 0.3);
+}
+
+form button[type="submit"]:hover {
+    background-color: #2a416a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(52, 86, 139, 0.4);
+}
+
+/* Fieldset untuk Passenger Details */
+fieldset {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9fbfd;
+}
+
+legend {
+    font-weight: 600;
+    color: #34568B;
+    font-size: 1.1em;
+    padding: 0 10px;
+}
+
+/* Tombol Aksi di luar form (misal: "Kembali ke Pencarian", "Tambah Penerbangan Baru") */
+.button {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* --- Gaya Form Pencarian di cari_jadwal.html --- */
+/* (Class names ini akan digunakan di cari_jadwal.html) */
+.search-form-container { /* Ini adalah container form itu sendiri */
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ambil lebar penuh container di mana ia berada */
+    max-width: 1000px; /* Lebar maksimal */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #e0e0e0;
+    margin-top: 20px; /* Jarak dari header/konten atas */
+    margin-bottom: 20px; /* Jarak dari konten bawah */
+}
+
+.search-form-container h2 {
+    width: 100%;
+    text-align: center;
+    color: #34568B;
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+.search-form-container .search-input-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+}
+
+/* KONTROL UTAMA UNTUK GRUP INPUT DI SINI */
+.input-field-group {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+    height: 55px; /* Tinggi tetap untuk input & label */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center; /* Sejajarkan ikon & input vertikal */
+    padding: 0 15px; /* Padding di dalam grup */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Penting untuk menyembunyikan label saat di atas */
+}
+
+.input-field-group:focus-within { /* Saat input di dalamnya fokus */
+    border-color: #34568B;
+    box-shadow: 0 0 0 3px rgba(52, 86, 139, 0.25);
+}
+
+.input-field-group input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0;
+    background: transparent;
+    color: #333;
+    font-size: 1em;
+    outline: none;
+    padding-left: 30px; /* Ruang untuk ikon di kiri */
+    padding-right: 15px; /* Ruang di kanan */
+    z-index: 1;
+}
+
+/* Styling untuk label yang melayang */
+.input-field-group .floating-label {
+    position: absolute;
+    left: 15px; /* Sejajar dengan padding input */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 1em;
+    pointer-events: none; /* Agar tidak menghalangi klik input */
+    transition: all 0.2s ease-in-out;
+    background-color: #fff;
+    padding: 0 5px;
+    z-index: 2; /* Di atas input */
+}
+
+/* Efek floating label saat input focus atau ada isi */
+.input-field-group input:focus + .floating-label,
+.input-field-group input:not(:placeholder-shown) + .floating-label {
+    top: 0; /* Pindah ke atas */
+    font-size: 0.85em; /* Ukuran font lebih kecil */
+    color: #34568B;
+    transform: translateY(-50%) translateX(-5px); /* Pindah ke atas dan sedikit geser */
+}
+
+/* Untuk input type="date", placeholder-shown tidak berfungsi sama, jadi paksa labelnya naik jika di-focus */
+.input-field-group input[type="date"]:focus + .floating-label {
+    top: 0;
+    font-size: 0.85em;
+    color: #34568B;
+    transform: translateY(-50%) translateX(-5px);
+}
+
+/* Styling untuk ikon di dalam input */
+.input-field-group .input-prefix-icon {
+    position: absolute;
+    left: 15px; /* Posisikan di kiri */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 1.1em;
+    z-index: 3; /* Pastikan ikon di atas label */
+}
+
+.search-action-button {
+    background-color: #34568B; /* Warna biru baru untuk tombol utama */
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(52, 86, 139, 0.3);
+    flex-shrink: 0;
+    min-width: 120px;
+    height: 55px; /* Tinggi tombol sama dengan input group */
+    margin-left: 15px; /* Jarak dari input terakhir */
+}
+
+.search-action-button:hover {
+    background-color: #2a416a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(52, 86, 139, 0.4);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) { /* Tablet and smaller */
+    .flight-card {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .airline-info {
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 15px;
+        min-width: unset;
+    }
+    .airline-logo {
+        margin-right: 15px;
+        margin-bottom: 0;
+    }
+    .flight-details-main {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    .flight-time-route {
+        text-align: left;
+    }
+    .flight-duration-stop {
+        width: 100%;
+        padding: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .flight-duration-stop .line {
+        flex-grow: 1;
+        width: auto;
+        margin: 0 10px;
+    }
+    .flight-price-action {
+        width: 100%;
+        align-items: flex-start;
+    }
+    .choose-button {
+        width: 100%;
+        max-width: unset;
+    }
+
+    /* Form umum adjustment for tablet (bukan search form di index) */
+    form { /* Ini menargetkan form umum */
+        max-width: 95%;
+    }
+
+    /* Search form di cari_jadwal.html */
+    .search-form-container { /* ini akan bekerja di cari_jadwal.html */
+        flex-direction: column;
+        align-items: stretch;
+        padding: 25px;
+    }
+    .input-field-group {
+        min-width: unset;
+        flex-basis: 100%;
+    }
+    .search-action-button {
+        min-width: unset;
+        width: 100%;
+        max-width: unset;
+        margin-left: 0;
+    }
+}
+
+
+@media (max-width: 768px) { /* Mobile */
+    .container {
+        width: 95%;
+        margin: 15px auto;
+        padding: 20px;
+    }
+    .flashes {
+        width: 95%;
+        padding: 10px 15px;
+    }
+
+    header {
+        flex-direction: column;
+        padding: 10px 5%;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    nav ul li {
+        margin: 5px 10px;
+    }
+}

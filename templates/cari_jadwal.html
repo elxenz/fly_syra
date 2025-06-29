@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cari Jadwal Penerbangan fLy.SyRa</title>
+    {# Ini akan menggunakan user_style.css untuk styling form #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}"> 
+    {# Font Awesome CDN untuk ikon #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {# Google Fonts - Poppins dan Inter #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header> {# Header akan digaya oleh user_style.css #}
+        <div class="logo">
+            <i class="fa-solid fa-plane"></i> fLy.SyRa
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="{{ url_for('all_flights') }}" class="active"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
+                {% if 'user_id' in session %}
+                    <li><span class="welcome-text">Halo, {{ session['username'] }}!</span></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('booking_history') }}"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
+                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {# Area untuk menampilkan pesan flash (misal: sukses, error, info) #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container"> {# Menggunakan container umum untuk halaman ini #}
+        <div class="search-form-tabs"> {# Tabs seperti di gambar tutu.ru #}
+            <div class="tab-item active"><i class="fas fa-plane"></i> Penerbangan</div>
+            <div class="tab-item"><i class="fas fa-train"></i> Kereta</div>
+            <div class="tab-item"><i class="fas fa-bus"></i> Bus</div>
+            {# Tambahkan tab lain jika perlu #}
+        </div>
+        <div class="search-form-wrapper-inner"> {# Wrapper untuk form di dalam container #}
+            <div class="search-form-container"> {# Menggunakan nama kelas yang sama dengan sebelumnya #}
+                <h2>Cari Jadwal Penerbangan</h2>
+                <form action="{{ url_for('search_flights') }}" method="get" class="search-input-form">
+                    {# Bandara Asal #}
+                    <div class="input-field-group">
+                        <i class="input-prefix-icon fas fa-plane-departure"></i>
+                        <input type="text" id="origin" name="origin" placeholder=" " required>
+                        <label for="origin" class="floating-label">Bandara Asal</label>
+                    </div>
+
+                    {# Bandara Tujuan #}
+                    <div class="input-field-group">
+                        <i class="input-prefix-icon fas fa-plane-arrival"></i>
+                        <input type="text" id="destination" name="destination" placeholder=" " required>
+                        <label for="destination" class="floating-label">Bandara Tujuan</label>
+                    </div>
+
+                    {# Tanggal Keberangkatan #}
+                    <div class="input-field-group">
+                        <i class="input-prefix-icon fas fa-calendar-alt"></i>
+                        <input type="date" id="departure_date" name="departure_date" placeholder=" " required>
+                        <label for="departure_date" class="floating-label">Tanggal Keberangkatan</label>
+                    </div>
+
+                    <button type="submit" class="search-action-button">Cari</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

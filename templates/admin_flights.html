@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Penerbangan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Manajemen Penerbangan</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
+            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
+            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
+            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <p><a href="{{ url_for('admin_add_flight') }}" class="button">Tambah Penerbangan Baru</a></p>
+
+        {% if flights %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nomor Penerbangan</th>
+                        <th>Dari</th>
+                        <th>Ke</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Maskapai</th>
+                        <th>Total Kursi</th>
+                        <th>Kursi Tersedia</th>
+                        <th>Harga</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight in flights %}
+                    <tr>
+                        <td>{{ flight.flight_number }}</td>
+                        <td>{{ flight.origin_airport }}</td>
+                        <td>{{ flight.destination_airport }}</td>
+                        <td>{{ flight.departure_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ flight.arrival_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ flight.airline }}</td>
+                        <td>{{ flight.total_seats }}</td>
+                        <td>{{ flight.available_seats }}</td>
+                        <td>Rp {{ "{:,.0f}".format(flight.price) }}</td>
+                        <td>
+                            <a href="{{ url_for('admin_edit_flight', flight_id=flight._id) }}">Edit</a> |
+                            <form action="{{ url_for('admin_delete_flight', flight_id=flight._id) }}" method="post" style="display:inline;" onsubmit="return confirm('Anda yakin ingin menghapus penerbangan ini dan semua pemesanan terkait?');">
+                                <button type="submit" style="background: none; border: none; color: red; cursor: pointer; padding: 0; font-size: inherit;">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Tidak ada penerbangan yang tersedia saat ini.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

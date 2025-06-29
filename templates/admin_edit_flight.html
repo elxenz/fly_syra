@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Penerbangan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Penerbangan: {{ flight.flight_number }}</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Home</a> |
+            <a href="{{ url_for('admin_flights') }}">Manajemen Penerbangan</a> |
+            <a href="{{ url_for('admin_users') }}">Manajemen Pengguna</a> |
+            <a href="{{ url_for('admin_bookings') }}">Manajemen Pemesanan</a> |
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if flight %}
+            <form action="{{ url_for('admin_edit_flight', flight_id=flight._id) }}" method="post">
+                <label for="flight_number">Nomor Penerbangan:</label>
+                <input type="text" id="flight_number" name="flight_number" value="{{ flight.flight_number }}" required>
+
+                <label for="origin_airport">Bandara Asal (IATA Code):</label>
+                <input type="text" id="origin_airport" name="origin_airport" value="{{ flight.origin_airport }}" required>
+
+                <label for="destination_airport">Bandara Tujuan (IATA Code):</label>
+                <input type="text" id="destination_airport" name="destination_airport" value="{{ flight.destination_airport }}" required>
+
+                <label for="departure_time">Waktu Keberangkatan:</label>
+                <input type="datetime-local" id="departure_time" name="departure_time" value="{{ flight.departure_time_str }}" required>
+
+                <label for="arrival_time">Waktu Kedatangan:</label>
+                <input type="datetime-local" id="arrival_time" name="arrival_time" value="{{ flight.arrival_time_str }}" required>
+
+                <label for="airline">Maskapai:</label>
+                <input type="text" id="airline" name="airline" value="{{ flight.airline }}" required>
+
+                <label for="total_seats">Total Kursi:</label>
+                <input type="number" id="total_seats" name="total_seats" min="1" value="{{ flight.total_seats }}" required>
+
+                <label for="available_seats_display">Kursi Tersedia (Baca Saja):</label>
+                <input type="number" id="available_seats_display" value="{{ flight.available_seats }}" disabled>
+
+                <label for="price">Harga per Tiket:</label>
+                <input type="number" id="price" name="price" step="0.01" min="0.01" value="{{ flight.price }}" required>
+
+                <button type="submit">Update Penerbangan</button>
+            </form>
+            <a href="{{ url_for('admin_flights') }}">Kembali ke Daftar Penerbangan</a>
+        {% else %}
+            <p>Penerbangan tidak ditemukan.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register fLy.SyRa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-plane"></i> fLy.SyRa
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="{{ url_for('all_flights') }}"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
+                {% if 'user_id' in session %}
+                    <li><span class="welcome-text">Halo, {{ session['username'] }}!</span></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('booking_history') }}"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
+                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="active"><i class="fas fa-user-plus"></i> Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h1>Register Akun Baru</h1>
+        <form action="{{ url_for('register') }}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="name">Nama Lengkap:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Register</button>
+        </form>
+        <p style="text-align: center; margin-top: 20px;">Sudah punya akun? <a href="{{ url_for('login') }}">Login di sini</a></p>
+    </div>
+</body>
+</html>

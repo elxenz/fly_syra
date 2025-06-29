@@ -1,0 +1,637 @@
+/* --- index_page_style.css --- */
+
+/* Import font Poppins dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- General Styles & Reset untuk index.html --- */
+html {
+    scroll-behavior: smooth;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    color: #333;
+    background-color: #f0f2f5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content-section {
+    flex-grow: 1;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #34568B;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2a416a;
+}
+
+/* --- Header / Navbar untuk index.html (Transparan) --- */
+header.main-page-header { /* Pastikan spesifik untuk index.html */
+    background-color: transparent; /* Transparan */
+    padding: 20px 5%; /* Padding lebih besar */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: none; /* Hilangkan shadow */
+    border-bottom: none; /* Hilangkan border */
+    position: absolute; /* Posisi absolut di atas hero */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    color: white; /* Warna teks di header */
+}
+
+.app-logo-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: white; /* Warna logo putih */
+    text-transform: uppercase;
+}
+
+.app-logo-brand .fa-plane {
+    margin-right: 8px;
+    font-size: 1.2em;
+    color: white; /* Warna ikon putih */
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: white; /* Warna link putih */
+    font-weight: 500;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: #F8B400; /* Warna aksen saat hover/aktif */
+    border-bottom: 2px solid #F8B400;
+}
+
+nav ul li a .fas {
+    font-size: 1.2em;
+    color: white; /* Warna ikon link putih */
+}
+
+.welcome-message-text {
+    color: white; /* Warna teks halo putih */
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+/* --- Hero Section untuk index.html --- */
+.main-hero-area {
+    position: relative;
+    height: 600px; /* Tinggi hero section lebih besar untuk menampung form */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background: url('images/back.jpeg') center/cover no-repeat;
+    background-position: center bottom; /* Sesuaikan posisi gambar jika perlu */
+    z-index: 0;
+    padding-top: 80px; /* Padding untuk menghindari overlap dengan header */
+}
+
+/* Overlay gelap sekarang pada ::before dari main-hero-area */
+.main-hero-area::before { 
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1; /* Di atas gambar latar belakang */
+}
+
+.hero-overlay-content { /* Konten di atas overlay, menampung teks dan form */
+    position: relative;
+    z-index: 2; /* Di atas overlay gelap */
+    padding: 0 20px;
+    max-width: 900px; /* Lebar maksimal konten */
+    width: 100%; /* Ambil lebar penuh */
+    display: flex; /* Menggunakan flex untuk mengatur teks dan form */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%; /* Pastikan mengisi tinggi hero */
+}
+
+.hero-overlay-content h1 {
+    font-size: 3.2em;
+    font-weight: 700;
+    margin-bottom: 20px; 
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+/* --- Search Form untuk index.html (TERINTEGRASI & DINAMIS) --- */
+.search-module-integrated {
+    width: 90%;
+    max-width: 950px; /* Lebar maksimal form lebih besar */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Padding di dalam modul form */
+    z-index: 4;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-tabs {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start; /* Mulai dari kiri */
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee; /* Garis bawah untuk tab */
+    padding: 0 10px;
+}
+
+.tab-item {
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px; /* Agar border menyatu dengan border-bottom .search-tabs */
+}
+
+.tab-item:hover {
+    color: #007bff;
+}
+
+.tab-item.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+}
+
+.search-form-container-integrated {
+    width: 100%;
+}
+
+.search-input-form-integrated {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* === GAYA BARU UNTUK INPUT YANG LEBIH DINAMIS (FLOATING LABEL) === */
+
+.input-field-group-integrated {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    height: 55px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    border: 1px solid #e0e6ed;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field-group-integrated:focus-within {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
+.input-field-group-integrated input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    /* Beri padding atas agar ada ruang untuk label yang melayang */
+    padding: 18px 45px 0 15px; /* Padding kanan untuk ikon */
+    background: transparent;
+    color: #333;
+    font-size: 0.95em;
+    font-family: inherit;
+    outline: none;
+    position: relative;
+    z-index: 2; /* Di atas label saat tidak aktif */
+}
+
+/* Chrome/Edge/Safari - Hapus autofill background color */
+.input-field-group-integrated input:-webkit-autofill,
+.input-field-group-integrated input:-webkit-autofill:hover, 
+.input-field-group-integrated input:-webkit-autofill:focus, 
+.input-field-group-integrated input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f7f9fc inset !important;
+    -webkit-text-fill-color: #333 !important;
+}
+
+.input-field-group-integrated label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 0.95em;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+    z-index: 1; /* Di bawah input saat tidak aktif */
+}
+
+/* EFEK FLOATING LABEL (STATE AKTIF) */
+.input-field-group-integrated input:focus + label,
+.input-field-group-integrated input:not(:placeholder-shown) + label,
+/* Untuk date input yang sudah diisi */
+.input-field-group-integrated input[type="date"][data-date]:not([data-date=""]) + label {
+    top: 10px; /* Posisi atas saat melayang */
+    font-size: 0.7em;
+    font-weight: 600;
+    color: #007bff;
+    transform: translateY(0);
+}
+/* Paksa label date input untuk selalu melayang saat di-focus */
+.input-field-group-integrated input[type="date"]:focus + label {
+    top: 10px;
+    font-size: 0.7em;
+    font-weight: 600;
+    color: #007bff;
+    transform: translateY(0);
+}
+
+
+.input-field-group-integrated .fas {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 1.1em;
+    z-index: 3;
+    transition: color 0.2s ease;
+}
+
+.input-field-group-integrated:focus-within .fas {
+    color: #007bff;
+}
+
+.input-field-group-integrated.separator-arrow {
+    flex-grow: 0;
+    flex-basis: 40px;
+    text-align: center;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-field-group-integrated.separator-arrow .fas {
+    position: static;
+    transform: none;
+    color: #888;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.input-field-group-integrated.separator-arrow .fas:hover {
+    transform: rotate(180deg);
+}
+
+.search-action-button-integrated {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    color: white;
+    padding: 0 30px; /* Padding horizontal */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    flex-shrink: 0;
+    height: 55px; /* Tinggi tombol sama dengan input field */
+    min-width: 150px;
+}
+
+.search-action-button-integrated:hover {
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+/* === AKHIR GAYA BARU === */
+
+
+/* --- Flash Messages (untuk index.html) --- */
+.flash-messages-display {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0;
+    box-shadow: none;
+}
+
+.flash-list-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.flash-list-items li {
+    padding: 15px 20px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.flash-list-items .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-list-items .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash-list-items .info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.flash-list-items .warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* --- Bagian Promo Maskapai Unggulan --- */
+.promo-airlines-section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto; /* Jarak dari konten atas/bawah */
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.promo-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.promo-header-container h2 {
+    font-size: 2em;
+    color: #34568B;
+    margin: 0;
+}
+
+.view-all-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: #34568B;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+.promo-cards-carousel {
+    display: flex;
+    overflow-x: auto; /* Memungkinkan scrolling horizontal */
+    -webkit-overflow-scrolling: touch; /* Untuk scrolling yang halus di iOS */
+    scroll-snap-type: x mandatory; /* Snap ke awal kartu */
+    gap: 20px; /* Jarak antar kartu */
+    padding-bottom: 15px; /* Ruang untuk scrollbar */
+}
+
+/* Sembunyikan scrollbar di WebKit browsers (Chrome, Safari) */
+.promo-cards-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.promo-cards-carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.promo-cards-carousel::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.promo-cards-carousel::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.promo-card {
+    flex-shrink: 0; /* Penting agar kartu tidak mengecil */
+    width: 280px; /* Lebar setiap kartu */
+    height: 350px; /* Tinggi kartu */
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: start; /* Snap ke awal saat di-scroll */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: #f0f2f5; /* Fallback background */
+}
+
+.promo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.promo-card-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.promo-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%); /* Gradient gelap di bawah */
+    z-index: 1;
+}
+
+.promo-book-button {
+    position: absolute;
+    top: 15px; /* Posisi kanan atas */
+    right: 15px;
+    background-color: #F8B400; /* Warna aksen - Emas */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    z-index: 3; /* Di atas overlay */
+    transition: background-color 0.2s ease;
+}
+
+.promo-book-button:hover {
+    background-color: #e0a800;
+}
+
+.promo-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    color: white;
+    z-index: 2; /* Di atas overlay, di bawah tombol */
+}
+
+.promo-card-content h3 {
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.promo-card-content p {
+    font-size: 0.9em;
+    margin-bottom: 0;
+}
+
+
+/* Responsive adjustments untuk index.html */
+@media (max-width: 992px) { /* Tablet and smaller */
+    .search-input-form-integrated {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    .input-field-group-integrated {
+        min-width: unset;
+        flex-basis: 100%;
+    }
+    .input-field-group-integrated.separator-arrow {
+        display: none; /* Sembunyikan panah pemisah di mode kolom */
+    }
+    .search-action-button-integrated {
+        min-width: unset;
+        width: 100%;
+    }
+    
+    .promo-cards-carousel {
+        padding-bottom: 10px; /* Sedikit kurang padding scrollbar */
+    }
+    .promo-card {
+        width: 250px; /* Sedikit lebih kecil di tablet */
+    }
+}
+
+@media (max-width: 768px) { /* Mobile */
+    .main-hero-area {
+        height: auto; /* Tinggi otomatis menyesuaikan konten */
+        min-height: 90vh;
+        border-radius: 0;
+        padding-bottom: 30px; /* Padding bawah agar form tidak terlalu mepet */
+    }
+
+    .hero-overlay-content {
+        justify-content: flex-start;
+        padding-top: 100px; /* Jarak dari atas */
+    }
+
+    .hero-overlay-content h1 {
+        font-size: 2.2em; /* Lebih kecil */
+    }
+    
+    .search-module-integrated {
+        padding: 15px; /* Kurangi padding form */
+        margin-top: 30px;
+    }
+
+    .search-tabs {
+       justify-content: center;
+    }
+   
+    /* Promo section mobile adjustments */
+    .promo-airlines-section {
+        margin: 20px auto;
+        padding: 15px;
+    }
+    .promo-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .promo-header-container h2 {
+        font-size: 1.5em;
+    }
+    .promo-cards-carousel {
+        gap: 15px;
+    }
+    .promo-card {
+        width: 220px; /* Lebih kecil lagi di mobile */
+        height: 300px;
+    }
+    .promo-card-content {
+        padding: 15px;
+    }
+    .promo-card-content h3 {
+        font-size: 1.2em;
+    }
+}

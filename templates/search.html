@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pencarian fLy.SyRa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-plane"></i> fLy.SyRa
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="{{ url_for('all_flights') }}" class="active"><i class="fas fa-calendar-alt"></i> Jadwal</a>
+                </li>
+                {% if 'user_id' in session %}
+                <li><span class="welcome-text">Halo, {{ session['username'] }}!</span></li>
+                {% if session.get('role') == 'admin' %}
+                <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-user-shield"></i> Admin</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('booking_history') }}"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <h1>Hasil Pencarian Penerbangan</h1>
+        {% if flights %}
+        <div class="flight-list">
+            {% for flight in flights %}
+            <div class="flight-card">
+                <div class="airline-info">
+                    {# Logika untuk menampilkan logo maskapai #}
+                    {% set logo_path = '' %}
+                    {% if flight.airline == 'Batik Air' %}{% set logo_path = 'batikair.jpeg' %}
+                    {% elif flight.airline == 'Citilink' %}{% set logo_path = 'citilink.jpeg' %}
+                    {% elif flight.airline == 'Garuda Indonesia' %}{% set logo_path = 'garuda.jpeg' %}
+                    {% elif flight.airline == 'Lion Air' %}{% set logo_path = 'lionair.jpeg' %}
+                    {% elif flight.airline == 'Pelita Air' %}{% set logo_path = 'pelitaair.jpeg' %}
+                    {% elif flight.airline == 'Sriwijaya Air' %}{% set logo_path = 'sriwijaya.jpeg' %}
+                    {% elif flight.airline == 'Super Air Jet' %}{% set logo_path = 'superjet.jpeg' %}
+                    {% elif flight.airline == 'TransNusa' %}{% set logo_path = 'transunsa.jpg' %}{# Perhatikan .jpg di
+                    sini #}
+                    {% endif %}
+
+                    {% if logo_path %}
+                    <img src="{{ url_for('static', filename='images/' + logo_path) }}" alt="{{ flight.airline }} Logo"
+                        class="airline-logo">
+                    {% else %}
+                    <div class="airline-logo"><i class="fas fa-plane"></i></div>
+                    {% endif %}
+                    <span class="airline-name">{{ flight.airline }}</span>
+                </div>
+
+                <div class="flight-details-main">
+                    <div class="flight-time-route">
+                        <span class="time">{{ flight.departure_time.strftime('%H:%M') }}</span>
+                        <span class="airport">{{ flight.origin_airport }}</span>
+                    </div>
+
+                    <div class="flight-duration-stop">
+                        <span class="duration">{{ (flight.arrival_time - flight.departure_time).seconds // 3600 }}j {{
+                            ((flight.arrival_time - flight.departure_time).seconds % 3600) // 60 }}m</span>
+                        <div class="line"></div>
+                        <span class="stop-info">Direct</span> {# Asumsi direct, jika ada logic stop bisa ditambahkan #}
+                    </div>
+
+                    <div class="flight-time-route">
+                        <span class="time">{{ flight.arrival_time.strftime('%H:%M') }}</span>
+                        <span class="airport">{{ flight.destination_airport }}</span>
+                    </div>
+                </div>
+
+                <div class="flight-price-action">
+                    <span class="flight-price">Rp {{ "{:,.0f}".format(flight.price) }}<small>/pax</small></span>
+                    <a href="{{ url_for('book_flight', flight_id=flight._id) }}" class="choose-button">Pesan</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Tidak ada penerbangan yang ditemukan untuk kriteria Anda.</p>
+        {% endif %}
+        <p style="text-align: center; margin-top: 20px;"><a href="{{ url_for('index') }}" class="button">Cari Lagi</a>
+        </p>
+    </div>
+</body>
+
+</html>

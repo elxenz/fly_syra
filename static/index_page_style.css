@@ -40,21 +40,24 @@ a:hover {
     color: #2a416a;
 }
 
-/* --- Header / Navbar untuk index.html (Transparan) --- */
+/* --- Header / Navbar untuk index.html (Transparan & Futuristik) --- */
 header.main-page-header { /* Pastikan spesifik untuk index.html */
-    background-color: transparent; /* Transparan */
+    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparan */
+    backdrop-filter: blur(15px); /* Efek kaca buram (Glassmorphism) */
+    -webkit-backdrop-filter: blur(15px); /* Dukungan browser WebKit */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Bayangan yang lebih kuat */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Border transparan */
     padding: 20px 5%; /* Padding lebih besar */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: none; /* Hilangkan shadow */
-    border-bottom: none; /* Hilangkan border */
     position: absolute; /* Posisi absolut di atas hero */
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
     color: white; /* Warna teks di header */
+    transition: all 0.5s ease; /* Transisi untuk perubahan gaya */
 }
 
 .app-logo-brand {
@@ -63,6 +66,7 @@ header.main-page-header { /* Pastikan spesifik untuk index.html */
     font-size: 1.8em;
     font-weight: 700;
     color: white; /* Warna logo putih */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Efek glow */
     text-transform: uppercase;
 }
 
@@ -70,8 +74,10 @@ header.main-page-header { /* Pastikan spesifik untuk index.html */
     margin-right: 8px;
     font-size: 1.2em;
     color: white; /* Warna ikon putih */
+    transition: transform 0.5s ease;
 }
 
+/* --- Efek link navigasi yang lebih dinamis --- */
 nav ul {
     list-style: none;
     margin: 0;
@@ -84,7 +90,7 @@ nav ul li {
     margin-left: 25px;
 }
 
-nav ul li a {
+nav ul li a.nav-link-item {
     color: white; /* Warna link putih */
     font-weight: 500;
     font-size: 1.05em;
@@ -92,26 +98,65 @@ nav ul li a {
     align-items: center;
     gap: 8px;
     padding: 5px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
+    position: relative;
+    transition: all 0.5s ease;
 }
 
-nav ul li a:hover,
-nav ul li a.active {
-    color: #F8B400; /* Warna aksen saat hover/aktif */
-    border-bottom: 2px solid #F8B400;
+/* Efek underline yang muncul dari bawah */
+nav ul li a.nav-link-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #F8B400; /* Warna aksen emas */
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.5s ease;
 }
 
+nav ul li a.nav-link-item.active::after,
+nav ul li a.nav-link-item:hover::after {
+    transform-origin: bottom left;
+    transform: scaleX(1);
+}
+
+nav ul li a.nav-link-item:hover,
+nav ul li a.nav-link-item.active {
+    color: #F8B400; /* Warna teks berubah saat di-hover/aktif */
+}
+
+/* Transisi warna ikon */
 nav ul li a .fas {
     font-size: 1.2em;
     color: white; /* Warna ikon link putih */
+    transition: color 0.5s ease;
 }
+
+nav ul li a.nav-link-item:hover .fas,
+nav ul li a.nav-link-item.active .fas {
+    color: #F8B400;
+}
+
 
 .welcome-message-text {
     color: white; /* Warna teks halo putih */
     font-weight: 500;
     margin-left: 20px;
 }
+
+/* --- Keyframe untuk efek pulse pada logo --- */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.app-logo-brand:hover .fa-plane {
+    animation: pulse 1s infinite; /* Menerapkan animasi pulse saat di-hover */
+}
+
 
 /* --- Hero Section untuk index.html --- */
 .main-hero-area {
@@ -350,7 +395,7 @@ nav ul li a .fas {
     width: auto;
     height: auto;
     cursor: pointer;
-    z-index: 10; /* Pastikan indikator tetap bisa diklik untuk membuka kalender */
+    z-index: 10; /* Ensure it's clickable */
 }
 
 .search-action-button-integrated {

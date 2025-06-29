@@ -4,73 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fLy.SyRa - Booking Tiket Pesawat</title>
-    <!-- HANYA link ke CSS khusus index.html -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='index_page_style.css') }}"> 
-    <!-- Font Awesome CDN untuk ikon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts - Poppins dan Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="main-page-header">
-        <div class="app-logo-brand">
-            <i class="fa-solid fa-plane"></i> fLy.SyRa
-        </div>
-        <nav class="main-page-nav">
-            <ul>
-                <li><a href="{{ url_for('index') }}" class="active nav-link-item"><i class="fas fa-home"></i> Beranda</a></li>
-                <li><a href="{{ url_for('all_flights') }}" class="nav-link-item"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
-                {% if 'user_id' in session %}
-                    <li><span class="welcome-message-text">Halo, {{ session['username'] }}!</span></li>
-                    {% if session.get('role') == 'admin' %}
-                        <li><a href="{{ url_for('admin_dashboard') }}" class="nav-link-item"><i class="fas fa-user-shield"></i> Admin</a></li>
-                    {% endif %}
-                    <li><a href="{{ url_for('booking_history') }}" class="nav-link-item"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
-                    <li><a href="{{ url_for('logout') }}" class="nav-link-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}" class="nav-link-item"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-                    <li><a href="{{ url_for('register') }}" class="nav-link-item"><i class="fas fa-user-plus"></i> Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
+    {# Sisipkan navbar dari file parsial #}
+    {% include '_navbar.html' %}
 
     <main class="main-content-section">
         <section class="main-hero-area">
             <div class="hero-overlay-content">
                 <h1>Temukan Penerbangan Impianmu</h1>
-                <!-- Form pencarian sekarang berada di dalam hero-overlay-content -->
                 <div class="search-module-integrated">
                     <div class="search-tabs">
                         <div class="tab-item active"><i class="fas fa-plane"></i> Penerbangan</div>
                     </div>
                     <div class="search-form-container-integrated">
                         <form action="{{ url_for('search_flights') }}" method="get" class="search-input-form-integrated">
-                            
-                            <!-- Input "Dari" dengan Floating Label -->
+
                             <div class="input-field-group-integrated">
                                 <input type="text" id="origin-integrated" name="origin" placeholder=" " required>
                                 <label for="origin-integrated">Dari</label>
                                 <i class="fas fa-plane-departure"></i>
                             </div>
 
-                            <!-- Ikon Pemisah -->
                             <div class="input-field-group-integrated separator-arrow">
                                 <i class="fas fa-exchange-alt"></i>
                             </div>
 
-                            <!-- Input "Ke" dengan Floating Label -->
                             <div class="input-field-group-integrated">
                                 <input type="text" id="destination-integrated" name="destination" placeholder=" " required>
                                 <label for="destination-integrated">Ke</label>
                                 <i class="fas fa-plane-arrival"></i>
                             </div>
 
-                            <!-- Input Tanggal dengan Floating Label -->
                             <div class="input-field-group-integrated">
-                                <!-- JS 'onchange' ditambahkan untuk membantu CSS mendeteksi value -->
                                 <input type="date" id="departure_date-integrated" name="departure_date" required onchange="this.setAttribute('data-date', this.value);">
                                 <label for="departure_date-integrated">Tanggal Keberangkatan</label>
                                 <i class="fas fa-calendar-alt"></i>
@@ -83,7 +54,6 @@
             </div>
         </section>
 
-        <!-- Area untuk menampilkan pesan flash (misal: sukses, error, info) -->
         <section class="flash-messages-display">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -96,7 +66,6 @@
             {% endwith %}
         </section>
 
-        <!-- Bagian: Promo Maskapai Unggulan (tetap ada) -->
         <section class="promo-airlines-section">
             <div class="promo-header-container">
                 <h2>Maskapai Unggulan</h2>
@@ -152,8 +121,7 @@
                         <p>Kenyamanan di Setiap Perjalanan.</p>
                     </div>
                 </div>
-                <!-- Tambahkan lebih banyak promo-card sesuai kebutuhan -->
-            </div>
+                </div>
         </section>
 
     </main>

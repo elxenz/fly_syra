@@ -1,0 +1,24 @@
+<header class="main-page-header">
+    <div class="app-logo-brand">
+        <i class="fa-solid fa-plane"></i> fLy.SyRa
+    </div>
+    <nav class="main-page-nav">
+        <ul>
+            {% if 'user_id' in session %}
+                <li><span class="welcome-message-text">Halo, {{ session['username'] }}!</span></li>
+            {% endif %}
+            <li><a href="{{ url_for('index') }}" class="nav-link-item"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="{{ url_for('all_flights') }}" class="nav-link-item"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
+            {% if 'user_id' in session %}
+                {% if session.get('role') == 'admin' %}
+                    <li><a href="{{ url_for('admin_dashboard') }}" class="nav-link-item"><i class="fas fa-user-shield"></i> Admin</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('booking_history') }}" class="nav-link-item"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
+                <li><a href="{{ url_for('logout') }}" class="nav-link-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}" class="nav-link-item"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="{{ url_for('register') }}" class="nav-link-item"><i class="fas fa-user-plus"></i> Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

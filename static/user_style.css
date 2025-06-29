@@ -9,13 +9,29 @@ body {
     padding: 0;
     font-family: 'Inter', 'Poppins', sans-serif;
     color: #333;
-    background-color: #f0f2f5; /* Warna latar belakang umum */
+    /* --- Gaya latar belakang baru --- */
+    background: url('images/back.jpeg') center center/cover no-repeat;
+    background-attachment: fixed; /* Membuat gambar latar belakang tetap saat di-scroll */
+    position: relative;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+/* --- Overlay gelap di atas latar belakang --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Overlay hitam semi-transparan */
+    backdrop-filter: blur(5px); /* Efek blur pada latar belakang */
+    z-index: -1;
 }
 
 main {
@@ -46,20 +62,34 @@ a:hover {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
+/* --- Perbarui gaya container untuk form login --- */
+.container {
+    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparan agar latar belakang terlihat */
+    backdrop-filter: blur(10px); /* Efek blur pada container */
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-top: 5vh; /* Sesuaikan margin agar di tengah layar */
+}
 
-/* --- Header / Navbar (untuk semua halaman user) --- */
-/* (Catatan: Gaya ini akan digunakan oleh semua halaman HTML kecuali index.html) */
+
+/* --- Header / Navbar untuk semua halaman user --- */
+/* --- Ini adalah bagian yang diubah untuk tampilan futuristik --- */
 header {
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15); /* Background semi-transparan */
+    backdrop-filter: blur(15px); /* Efek kaca buram (Glassmorphism) */
+    -webkit-backdrop-filter: blur(15px); /* Dukungan untuk browser WebKit */
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border-bottom: 1px solid #eee;
-    position: sticky;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Bayangan yang lebih kuat */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18); /* Border transparan */
+    position: sticky; /* Tetap berada di atas saat di-scroll */
     top: 0;
     z-index: 1000;
+    transition: all 0.5s ease; /* Transisi untuk perubahan gaya */
 }
 
 .logo {
@@ -67,7 +97,8 @@ header {
     align-items: center;
     font-size: 1.8em;
     font-weight: 700;
-    color: #34568B;
+    color: #fff; /* Warna logo putih agar kontras dengan overlay */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Efek glow */
     text-transform: uppercase;
 }
 
@@ -89,34 +120,58 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #555;
+    color: #f0f0f0; /* Warna teks lebih terang untuk kontras */
     font-weight: 500;
     font-size: 1.05em;
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 5px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
+    position: relative;
+    transition: all 0.5s ease;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #F8B400; /* Warna aksen emas */
+    transform: scaleX(0); /* Awalnya tidak terlihat */
+    transform-origin: bottom right;
+    transition: transform 0.5s ease;
+}
+
+nav ul li a.active::after,
+nav ul li a:hover::after {
+    transform-origin: bottom left;
+    transform: scaleX(1); /* Tampil saat di-hover atau aktif */
 }
 
 nav ul li a:hover,
 nav ul li a.active {
-    color: #34568B;
-    border-bottom: 2px solid #34568B;
+    color: #F8B400; /* Warna teks berubah saat di-hover/aktif */
 }
 
+/* Icon colors */
 nav ul li a .fas, nav ul li a .fa-plane {
     font-size: 1.2em;
-    color: #34568B;
+    color: #fff; /* Warna ikon putih */
+    transition: color 0.5s ease;
+}
+
+nav ul li a:hover .fas, nav ul li a.active .fas {
+    color: #F8B400; /* Mengubah warna ikon saat hover/aktif */
 }
 
 .welcome-text {
-    color: #555;
+    color: #fff; /* Warna teks Halo putih */
     font-weight: 500;
     margin-left: 20px;
 }
-
+/* --- Akhir perubahan gaya navbar --- */
 
 /* --- Flash Messages (untuk semua halaman user KECUALI index.html) --- */
 .flashes {
@@ -325,7 +380,7 @@ nav ul li a .fas, nav ul li a .fa-plane {
 }
 
 .choose-button:hover {
-    background-color: #2a416a; /* Warna biru hover */
+    background-color: #2a416a;
     transform: translateY(-2px);
 }
 
@@ -342,6 +397,124 @@ form {
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+/* --- New styles for a more dynamic and cool login page --- */
+/* (These styles will enhance the form from the base user_style.css) */
+
+/* Keyframe for fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply animation to the form container */
+.container form.dynamic-form {
+    animation: fadeIn 0.8s ease-out;
+    animation-delay: 0.2s; /* Delay the animation slightly */
+    animation-fill-mode: backwards; /* Keep the state before animation starts */
+}
+
+/* Enhanced input field group styling for better motion */
+/* The base styles already exist in user_style.css, but this ensures they are applied consistently */
+.input-field-group {
+    position: relative;
+    margin-bottom: 15px; /* Add some margin between groups */
+    height: 55px; /* Maintain a consistent height */
+}
+
+/* Floating label effect */
+.input-field-group .floating-label {
+    position: absolute;
+    left: 45px; /* Position next to the icon */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 1em;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+    background-color: transparent;
+    padding: 0;
+    z-index: 2;
+}
+
+/* Floating label active state */
+.input-field-group input:focus + .floating-label,
+.input-field-group input:not(:placeholder-shown) + .floating-label {
+    top: -10px; /* Move label up */
+    font-size: 0.85em; /* Shrink font size */
+    color: #34568B;
+    background-color: #f9fbfd; /* Match form background */
+    padding: 0 5px;
+}
+
+/* Icon inside the input field */
+.input-field-group .input-prefix-icon {
+    position: absolute;
+    left: 15px; /* Position on the left */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 1.1em;
+    z-index: 3;
+    transition: color 0.3s ease; /* Add transition for icon color */
+}
+
+/* Icon color on focus */
+.input-field-group input:focus ~ .input-prefix-icon {
+    color: #34568B; /* Change icon color when input is focused */
+}
+
+/* Input padding to make space for the icon */
+.input-field-group input {
+    padding-left: 45px; /* Increase padding to accommodate icon */
+    padding-right: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input focus state */
+.input-field-group input:focus {
+    border-color: #34568B;
+    box-shadow: 0 0 0 3px rgba(52, 86, 139, 0.25);
+    outline: none;
+}
+
+/* Background Image for the body */
+body {
+    background: url('images/back.jpeg') center center/cover no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    backdrop-filter: blur(5px); /* Optional: Add a blur effect */
+    z-index: -1;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* Optional: Add a blur effect to the container itself */
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-top: 5vh; /* Adjust margin to center it better */
 }
 
 form label {
@@ -545,6 +718,20 @@ legend {
     font-size: 1.1em;
     z-index: 3; /* Pastikan ikon di atas label */
 }
+
+/* === Perbaikan ikon kalender ganda === */
+/* Sembunyikan ikon kalender bawaan untuk input tanggal di browser WebKit (Chrome/Safari) */
+.input-field-group input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
 
 .search-action-button {
     background-color: #34568B; /* Warna biru baru untuk tombol utama */

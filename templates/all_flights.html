@@ -11,29 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fa-solid fa-plane"></i> fLy.SyRa
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Beranda</a></li>
-                <li><a href="{{ url_for('all_flights') }}" class="active"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
-                {% if 'user_id' in session %}
-                    <li><span class="welcome-text">Halo, {{ session['username'] }}!</span></li>
-                    {% if session.get('role') == 'admin' %}
-                        <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-user-shield"></i> Admin</a></li>
-                    {% endif %}
-                    <li><a href="{{ url_for('booking_history') }}"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
-                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-                    <li><a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
-
+{% include '_navbar.html' %}
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="flashes">

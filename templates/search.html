@@ -3,54 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Pencarian fLy.SyRa</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='schedule_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Hasil Pencarian - fLy.SyRa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            background-image: linear-gradient(to bottom right, #0F172A, #1E293B, #334155);
+        }
+    </style>
 </head>
-<body>
+<body class="text-gray-900">
 {% include '_navbar.html' %}
-    <div class="container">
-        <h1>Hasil Pencarian Penerbangan</h1>
-        {% if flights %}
-            <div class="flight-list">
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-white mb-8">Hasil Pencarian Penerbangan</h1>
+        
+        <div class="space-y-6">
+            {% if flights %}
                 {% for flight in flights %}
-                <div class="flight-card">
-                    <div class="airline-info">
-                        <img src="{{ url_for('static', filename='images/' + (flight.airline|lower|replace(' ', '')) + '.jpeg') }}" alt="{{ flight.airline }} Logo" class="airline-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="airline-logo" style="display:none; font-size: 2em; color: #34568B; background-color: #f0f2f5; display:flex; justify-content:center; align-items:center;"><i class="fas fa-plane"></i></div>
-                        <span class="airline-name">{{ flight.airline }}</span>
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    
+                    <div class="w-full md:w-1/5 flex flex-row md:flex-col items-center text-center space-x-4 md:space-x-0">
+                        <img src="{{ url_for('static', filename='images/' + (flight.airline|lower|replace(' ', '')) + '.jpeg') }}" alt="{{ flight.airline }} Logo" class="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full shadow-md mb-2" onerror="this.style.display='none'">
+                        <span class="font-semibold text-slate-800">{{ flight.airline }}</span>
                     </div>
 
-                    <div class="flight-details-main">
-                        <div class="flight-time-route">
-                            <span class="time">{{ flight.departure_time.strftime('%H:%M') }}</span>
-                            <span class="airport">{{ flight.origin_airport }}</span>
+                    <div class="w-full md:w-3/5 flex items-center justify-between">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-slate-900">{{ flight.departure_time.strftime('%H:%M') }}</p>
+                            <p class="text-sm text-slate-500">{{ flight.origin_airport }}</p>
                         </div>
-
-                        <div class="flight-duration-stop">
-                            <span class="duration">{{ (flight.arrival_time - flight.departure_time).seconds // 3600 }}j {{ ((flight.arrival_time - flight.departure_time).seconds % 3600) // 60 }}m</span>
-                            <div class="line"></div>
-                            <span class="stop-info">Langsung</span>
+                        <div class="text-center text-sm text-slate-500 w-1/3">
+                            <p>{{ (flight.arrival_time - flight.departure_time).seconds // 3600 }}j {{ ((flight.arrival_time - flight.departure_time).seconds % 3600) // 60 }}m</p>
+                            <div class="w-full bg-slate-200 h-0.5 my-1 relative">
+                                <div class="w-2 h-2 rounded-full bg-slate-500 absolute top-1/2 -translate-y-1/2 left-0"></div>
+                                <div class="w-2 h-2 rounded-full bg-slate-500 absolute top-1/2 -translate-y-1/2 right-0"></div>
+                            </div>
+                            <p>Langsung</p>
                         </div>
-
-                        <div class="flight-time-route">
-                            <span class="time">{{ flight.arrival_time.strftime('%H:%M') }}</span>
-                            <span class="airport">{{ flight.destination_airport }}</span>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-slate-900">{{ flight.arrival_time.strftime('%H:%M') }}</p>
+                            <p class="text-sm text-slate-500">{{ flight.destination_airport }}</p>
                         </div>
                     </div>
 
-                    <div class="flight-price-action">
-                        <span class="flight-price">Rp {{ "{:,.0f}".format(flight.price) }}<small>/pax</small></span>
-                        <a href="{{ url_for('book_flight', flight_id=flight._id) }}" class="choose-button">Pesan</a>
+                    <div class="w-full md:w-1/5 flex flex-col items-center md:items-end border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
+                        <p class="text-xl font-bold text-orange-500 mb-2">Rp {{ "{:,.0f}".format(flight.price) }}<span class="text-sm text-slate-500 font-normal">/pax</span></p>
+                        <a href="{{ url_for('book_flight', flight_id=flight._id) }}" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all shadow-lg hover:shadow-blue-500/50 text-center">
+                            Pesan
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
-            </div>
-        {% else %}
-            <p style="text-align:center; color:#fff; background-color: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px;">Tidak ada penerbangan yang ditemukan untuk kriteria Anda.</p>
-        {% endif %}
-        <p style="text-align: center; margin-top: 20px;"><a href="{{ url_for('index') }}" class="choose-button">Cari Lagi</a></p>
-    </div>
+            {% else %}
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center max-w-lg mx-auto">
+                    <p class="text-slate-600 text-lg">Tidak ada penerbangan yang ditemukan untuk kriteria Anda.</p>
+                    <a href="{{ url_for('index') }}" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-all shadow-lg hover:shadow-blue-500/50">
+                        Cari Lagi
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
 </body>
 </html>

@@ -1,56 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fLy.SyRa - Booking Tiket Pesawat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='navbar_index_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>FLY.SYRA - Temukan Penerbangan Impianmu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            background-image: linear-gradient(to bottom right, #0F172A, #1E293B, #334155);
+        }
+        .tab-btn.active {
+            border-bottom-color: #3b82f6;
+            color: #ffffff;
+        }
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+        /* Animasi untuk tabel agar terlihat futuristik */
+        @keyframes slide-up-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-slide-up {
+            animation: slide-up-fade-in 0.5s ease-out forwards;
+        }
+    </style>
 </head>
-<body>
+<body class="text-gray-200">
     {% include '_navbar.html' %}
 
-    <main class="main-content-section">
-        <section class="main-hero-area">
-            <div class="hero-overlay-content">
-                <h1 class="animated-heading">Temukan Penerbangan Impianmu</h1>
-                <div class="search-module-integrated">
-                    <div class="search-tabs">
-                        <div class="tab-item active"><i class="fas fa-plane"></i> Penerbangan</div>
+    <main class="container mx-auto px-6 py-16 md:py-24 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4 text-white">
+            Temukan Penerbangan <br class="hidden md:block"> Impianmu
+        </h1>
+        
+        <div class="max-w-4xl mx-auto bg-slate-800/70 backdrop-blur-sm rounded-xl shadow-2xl p-6 md:p-8 mt-12 text-left">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-4">
+                    {% for category, message in messages %}
+                        <div class="p-3 rounded-md text-white {{ 'bg-red-500/80' if category == 'error' else 'bg-blue-500/80' }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                     </div>
-                    <form action="{{ url_for('search_flights') }}" method="get" class="search-input-form-integrated">
+                {% endif %}
+            {% endwith %}
 
-                        <div class="input-field-group-integrated">
-                            <i class="fas fa-plane-departure"></i>
-                            <input type="text" id="origin-integrated" name="origin" placeholder=" " required>
-                            <label for="origin-integrated">Dari</label>
+            <div class="flex border-b border-slate-700 mb-6">
+                <button id="tab-flight" class="tab-btn active text-base font-semibold px-4 py-3 flex items-center gap-2">
+                    <i class="fas fa-plane"></i> Penerbangan
+                </button>
+                <button id="tab-code" class="tab-btn text-base font-semibold px-4 py-3 flex items-center gap-2 text-slate-400">
+                    <i class="fas fa-barcode"></i> Kode Penerbangan
+                </button>
+            </div>
+
+            <div>
+                <div id="content-flight">
+                    <form action="{{ url_for('search_flights') }}" method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                        <div class="md:col-span-5">
+                            <label for="origin" class="block text-sm font-medium text-slate-300 mb-1">Dari</label>
+                            <div class="relative">
+                                <i class="fas fa-plane-departure absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="origin" name="origin" placeholder="Kota atau Bandara" class="w-full bg-slate-700 border border-slate-600 rounded-md py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-white" required>
+                            </div>
                         </div>
 
-                        <div class="separator-arrow">
-                            <i class="fas fa-exchange-alt"></i>
+                        <div class="hidden md:flex md:col-span-1 justify-center items-center">
+                           <button type="button" class="bg-slate-600 hover:bg-slate-500 p-2 rounded-full text-white transition-transform duration-300 hover:rotate-180">
+                                <i class="fas fa-exchange-alt"></i>
+                           </button>
+                        </div>
+                        
+                        <div class="md:col-span-5">
+                            <label for="destination" class="block text-sm font-medium text-slate-300 mb-1">Ke</label>
+                            <div class="relative">
+                                <i class="fas fa-plane-arrival absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="destination" name="destination" placeholder="Kota atau Bandara" class="w-full bg-slate-700 border border-slate-600 rounded-md py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-white" required>
+                            </div>
+                        </div>
+                        
+                        <div class="md:col-span-6">
+                            <label for="departure-date" class="block text-sm font-medium text-slate-300 mb-1">Tanggal Keberangkatan</label>
+                            <div class="relative">
+                                <i class="fas fa-calendar-day absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="date" id="departure-date" name="departure_date" class="w-full bg-slate-700 border border-slate-600 rounded-md py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-white" required>
+                            </div>
                         </div>
 
-                        <div class="input-field-group-integrated">
-                            <i class="fas fa-plane-arrival"></i>
-                            <input type="text" id="destination-integrated" name="destination" placeholder=" " required>
-                            <label for="destination-integrated">Ke</label>
+                        <div class="md:col-span-6">
+                            <label class="block text-sm font-medium text-slate-300 mb-1 invisible">Cari</label>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-300 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-2">
+                                <i class="fas fa-search"></i>
+                                Cari Tiket
+                            </button>
                         </div>
+                    </form>
+                </div>
 
-                        <div class="input-field-group-integrated">
-                            <i class="fas fa-calendar-alt"></i>
-                            <input type="text" id="departure_date-integrated" name="departure_date" placeholder=" " onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" required>
-                            <label for="departure_date-integrated">Tanggal Keberangkatan</label>
+                <div id="content-code" class="hidden">
+                    <form action="{{ url_for('search_by_code') }}" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <div class="md:col-span-2">
+                            <label for="flight-code" class="block text-sm font-medium text-slate-300 mb-1">Kode Penerbangan</label>
+                            <div class="relative">
+                                <i class="fas fa-ticket-alt absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="flight-code" name="flight_code" placeholder="Contoh: GA213" class="w-full bg-slate-700 border border-slate-600 rounded-md py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-white" required>
+                            </div>
                         </div>
-
-                        <button type="submit" class="search-action-button-integrated">Cari Tiket</button>
+                        <div class="md:col-span-1">
+                             <label class="block text-sm font-medium text-slate-300 mb-1 invisible">Cari</label>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-300 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-2">
+                                <i class="fas fa-search"></i>
+                                Cari Tiket
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
-        </section>
-        <section class="promo-airlines-section">
-            </section>
-    </main>
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-16 text-left">
+            <h2 class="text-2xl font-bold text-white mb-6">Penerbangan Tersedia Berikutnya</h2>
+            
+            {% if flights %}
+            <div class="bg-slate-800/70 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs text-slate-400 uppercase bg-slate-900/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-4">Maskapai</th>
+                                <th scope="col" class="px-6 py-4">Rute</th>
+                                <th scope="col" class="px-6 py-4">Jadwal Keberangkatan</th>
+                                <th scope="col" class="px-6 py-4 text-right">Harga</th>
+                                <th scope="col" class="px-6 py-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for flight in flights %}
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/30 animate-slide-up" style="animation-delay: {{ loop.index * 100 }}ms;">
+                                <td class="px-6 py-4 font-medium text-white whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <img src="{{ url_for('static', filename='images/' + (flight.airline|lower|replace(' ', '')) + '.jpeg') }}" alt="{{ flight.airline }}" class="w-8 h-8 rounded-full object-contain bg-white" onerror="this.style.display='none'">
+                                        <div>
+                                            {{ flight.airline }}
+                                            <div class="font-normal text-slate-400">{{ flight.flight_number }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="font-bold">{{ flight.origin_airport }}</span> &rarr; <span class="font-bold">{{ flight.destination_airport }}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ flight.departure_time.strftime('%a, %d %b %Y - %H:%M') }}
+                                </td>
+                                <td class="px-6 py-4 font-bold text-orange-400 text-right whitespace-nowrap">
+                                    Rp {{ "{:,.0f}".format(flight.price) }}
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <a href="{{ url_for('book_flight', flight_id=flight._id) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-all text-xs">
+                                        Pesan
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-slate-800/70 backdrop-blur-sm rounded-xl shadow-2xl p-8 text-center">
+                <p class="text-slate-400">Saat ini tidak ada penerbangan yang tersedia.</p>
+            </div>
+            {% endif %}
+        </div>
+        </main>
+
+    <script>
+        const tabFlight = document.getElementById('tab-flight');
+        const tabCode = document.getElementById('tab-code');
+        const contentFlight = document.getElementById('content-flight');
+        const contentCode = document.getElementById('content-code');
+        function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+            activeTab.classList.add('active');
+            activeTab.classList.remove('text-slate-400');
+            inactiveTab.classList.remove('active');
+            inactiveTab.classList.add('text-slate-400');
+            activeContent.classList.remove('hidden');
+            inactiveContent.classList.add('hidden');
+        }
+        tabFlight.addEventListener('click', () => switchTab(tabFlight, tabCode, contentFlight, contentCode));
+        tabCode.addEventListener('click', () => switchTab(tabCode, tabFlight, contentCode, contentFlight));
+        const today = new Date().toISOString().split('T')[0];
+        const departureDateInput = document.getElementById('departure-date');
+        if (departureDateInput) {
+            departureDateInput.setAttribute('min', today);
+            departureDateInput.value = today;
+        }
+    </script>
 </body>
 </html>

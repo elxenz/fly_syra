@@ -1,75 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Pemesanan fLy.SyRa</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='user_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Riwayat Pemesanan - FLY.SYRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            background-image: linear-gradient(to bottom right, #0F172A, #1E293B, #334155);
+        }
+    </style>
 </head>
-<body>
+<body class="text-gray-300">
 {% include '_navbar.html' %}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class="flashes">
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-white mb-8">Riwayat Pemesanan Anda</h1>
 
-    <div class="container">
-        <h1>Riwayat Pemesanan Anda</h1>
-        {% if bookings %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Penerbangan</th>
-                        <th>Dari</th>
-                        <th>Ke</th>
-                        <th>Tgl Keberangkatan</th>
-                        <th>Jumlah Tiket</th>
-                        <th>Total Harga</th>
-                        <th>Status</th>
-                        <th>Penumpang</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for booking in bookings %}
-                    <tr>
-                        <td>{{ booking._id }}</td>
-                        <td>{{ booking.flight_details.flight_number if booking.flight_details else 'N/A' }} ({{ booking.flight_details.airline if booking.flight_details else 'N/A' }})</td>
-                        <td>{{ booking.flight_details.origin_airport if booking.flight_details else 'N/A' }}</td>
-                        <td>{{ booking.flight_details.destination_airport if booking.flight_details else 'N/A' }}</td>
-                        <td>
-                            {% if booking.flight_details and booking.flight_details.departure_time %}
-                                {{ booking.flight_details.departure_time.strftime('%Y-%m-%d %H:%M') }}
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                        <td>{{ booking.number_of_tickets }}</td>
-                        <td>Rp {{ "{:,.0f}".format(booking.total_price) }}</td>
-                        <td>{{ booking.status }}</td>
-                        <td>
-                            <ul>
-                            {% for passenger in booking.passengers %}
-                                <li>{{ passenger.name }} ({{ passenger.id_number }})</li>
-                            {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>Anda belum memiliki riwayat pemesanan.</p>
-        {% endif %}
-    </div>
+        <div class="bg-slate-800/70 backdrop-blur-sm rounded-xl shadow-2xl p-6 md:p-8">
+            {% if bookings %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-slate-300">
+                    <thead class="text-xs text-slate-400 uppercase bg-slate-700/50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Penerbangan</th>
+                            <th scope="col" class="px-6 py-3">Rute</th>
+                            <th scope="col" class="px-6 py-3">Tanggal Berangkat</th>
+                            <th scope="col" class="px-6 py-3">Jumlah Tiket</th>
+                            <th scope="col" class="px-6 py-3">Total Harga</th>
+                            <th scope="col" class="px-6 py-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/30">
+                            <td class="px-6 py-4 font-medium text-white">
+                                {{ booking.flight_details.flight_number }} <br>
+                                <span class="font-normal text-slate-400">{{ booking.flight_details.airline }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ booking.flight_details.origin_airport }} &rarr; {{ booking.flight_details.destination_airport }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ booking.flight_details.departure_time.strftime('%d %b %Y, %H:%M') }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ booking.number_of_tickets }}
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-orange-400">
+                                Rp {{ "{:,.0f}".format(booking.total_price) }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                    {{ booking.status|capitalize }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <p class="text-slate-400">Anda belum memiliki riwayat pemesanan.</p>
+                    <a href="{{ url_for('all_flights') }}" class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all">
+                        Cari Penerbangan
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
 </body>
 </html>

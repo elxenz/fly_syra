@@ -1,27 +1,29 @@
-<header class="main-page-header">
-    <div class="app-logo-brand">
-        <i class="fa-solid fa-plane"></i> fLy.SyRa
-    </div>
-    <nav class="main-page-nav">
-        <ul>
+<header class="bg-[#1a202c] p-6 md:p-8 border-b border-slate-700">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="{{ url_for('index') }}" class="text-2xl font-bold tracking-wider text-gray-200">
+            FLY.SYRA
+        </a>
+        <nav class="hidden md:flex items-center space-x-6 text-sm text-gray-400">
+            <a href="{{ url_for('index') }}" class="hover:text-blue-400 transition-colors flex items-center"><i class="fas fa-home mr-2"></i>Beranda</a>
+            <a href="{{ url_for('all_flights') }}" class="hover:text-blue-400 transition-colors flex items-center"><i class="fas fa-calendar-alt mr-2"></i>Jadwal</a>
+            
             {% if 'user_id' in session %}
-                <li><span class="welcome-message-text">Halo, {{ session['username'] }}!</span></li>
-            {% endif %}
-            <li><a href="{{ url_for('index') }}" class="nav-link-item"><i class="fas fa-home"></i> Beranda</a></li>
-            <li><a href="{{ url_for('all_flights') }}" class="nav-link-item"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
-            {% if 'user_id' in session %}
+                {# Jika pengguna sudah login #}
                 {% if session.get('role') == 'admin' %}
-                    <li><a href="{{ url_for('admin_dashboard') }}" class="nav-link-item"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    <a href="{{ url_for('admin_dashboard') }}" class="hover:text-blue-400 transition-colors flex items-center"><i class="fas fa-user-shield mr-2"></i>Admin</a>
+                {% else %}
+                    <a href="{{ url_for('booking_history') }}" class="hover:text-blue-400 transition-colors flex items-center"><i class="fas fa-ticket-alt mr-2"></i>Pemesanan Saya</a>
                 {% endif %}
-                {# Tampilkan menu Pemesanan Saya hanya jika role BUKAN admin #}
-                {% if session.get('role') != 'admin' %}
-                    <li><a href="{{ url_for('booking_history') }}" class="nav-link-item"><i class="fas fa-ticket-alt"></i> Pemesanan Saya</a></li>
-                {% endif %}
-                <li><a href="{{ url_for('logout') }}" class="nav-link-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <a href="{{ url_for('logout') }}" class="hover:text-blue-400 transition-colors flex items-center"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                <span class="text-white bg-gray-700 px-4 py-2 rounded-md">{{ session['username'] }}</span>
             {% else %}
-                <li><a href="{{ url_for('login') }}" class="nav-link-item"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-                <li><a href="{{ url_for('register') }}" class="nav-link-item"><i class="fas fa-user-plus"></i> Register</a></li>
+                {# Jika pengguna belum login #}
+                <a href="{{ url_for('login') }}" class="hover:text-blue-400 transition-colors flex items-center"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+                <a href="{{ url_for('register') }}" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors flex items-center">Register</a>
             {% endif %}
-        </ul>
-    </nav>
+        </nav>
+        <button class="md:hidden text-2xl text-gray-200">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
 </header>

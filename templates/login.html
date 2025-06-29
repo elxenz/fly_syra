@@ -1,62 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login fLy.SyRa</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='auth_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Login - FLY.SYRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            background-image: linear-gradient(to bottom right, #0F172A, #1E293B, #334155);
+        }
+    </style>
 </head>
-<body>
+<body class="text-gray-300">
     {% include '_navbar.html' %}
 
-    <main class="auth-main-content">
-        <div class="split-container">
-            <div class="left-panel">
-                <h2>SELAMAT DATANG!</h2>
-                <p>Silakan masuk ke akun Anda untuk melanjutkan pemesanan penerbangan impian Anda.</p>
+    <main class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl w-full mx-auto bg-slate-800/70 rounded-2xl shadow-2xl flex overflow-hidden">
+            
+            <div class="hidden md:flex flex-col justify-center p-12 w-1/2 bg-slate-900/50">
+                <h2 class="text-4xl font-bold text-white mb-4">SELAMAT DATANG!</h2>
+                <p class="text-slate-400">
+                    Silakan masuk ke akun Anda untuk melanjutkan pemesanan penerbangan impian Anda.
+                </p>
             </div>
 
-            <div class="right-panel">
-                <h2>Masuk</h2>
-                <p class="subtitle">Masuk dengan akun yang sudah terdaftar.</p>
+            <div class="w-full md:w-1/2 p-8 md:p-12">
+                <h2 class="text-2xl font-bold text-white mb-1">Masuk</h2>
+                <p class="text-slate-400 mb-8">Masuk dengan akun yang sudah terdaftar.</p>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
-                        <ul class="flashes">
                         {% for category, message in messages %}
-                            <li class="{{ category }}">{{ message }}</li>
+                            <div class="mb-4 p-3 rounded-md text-white {{ 'bg-red-500/80' if category == 'error' else 'bg-blue-500/80' }}" role="alert">
+                                {{ message }}
+                            </div>
                         {% endfor %}
-                        </ul>
                     {% endif %}
                 {% endwith %}
 
-                <form action="{{ url_for('login') }}" method="post">
-                    <div class="form-group">
-                        <i class="form-icon fas fa-user"></i>
-                        <input type="text" id="username" name="username" placeholder="Nama Pengguna" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="form-icon fas fa-lock"></i>
-                        <input type="password" id="password" name="password" placeholder="Kata Sandi" required>
-                    </div>
-
-                    <div class="form-options">
-                        <div>
-                            <input type="checkbox" id="remember_me">
-                            <label for="remember_me">Ingat Saya</label>
+                <form action="{{ url_for('login') }}" method="POST" class="space-y-6">
+                    <div>
+                        <div class="relative">
+                            <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" name="username" placeholder="Nama Pengguna" class="w-full bg-slate-700 border border-slate-600 rounded-md py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-white" required>
                         </div>
-                        <a href="#">Lupa Kata Sandi?</a>
+                    </div>
+                    <div>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="password" name="password" placeholder="Kata Sandi" class="w-full bg-slate-700 border border-slate-600 rounded-md py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-white" required>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center">
+                            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500 rounded">
+                            <label for="remember_me" class="ml-2 block text-slate-400">Ingat Saya</label>
+                        </div>
+                        <a href="#" class="font-medium text-blue-500 hover:text-blue-400">Lupa Kata Sandi?</a>
                     </div>
 
-                    <button type="submit" class="form-btn form-btn-primary">Masuk</button>
-                    <button type="button" class="form-btn form-btn-secondary">
-                        <i class="fab fa-google"></i> Masuk dengan Google
-                    </button>
+                    <div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-300 shadow-lg hover:shadow-blue-500/50">
+                            Masuk
+                        </button>
+                    </div>
                 </form>
 
-                <p class="bottom-link">
-                    Belum punya akun? <a href="{{ url_for('register') }}">Daftar di sini</a>
+                <p class="mt-8 text-center text-sm text-slate-400">
+                    Belum punya akun?
+                    <a href="{{ url_for('register') }}" class="font-medium text-blue-500 hover:text-blue-400">Daftar di sini</a>
                 </p>
             </div>
         </div>

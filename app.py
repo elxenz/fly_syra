@@ -345,6 +345,25 @@ def admin_dashboard():
                            new_clients_quarter=new_clients_quarter,
                            top_flights=top_flights)
 
+@app.route('/')
+def index():
+    # --- PENAMBAHAN KODE ---
+    # Ambil waktu saat ini
+    now = datetime.now()
+    
+    # Query untuk mencari penerbangan yang akan datang dan masih tersedia
+    query = {
+        'departure_time': {'$gt': now},
+        'available_seats': {'$gt': 0}
+    }
+    
+    # Ambil 10 penerbangan terdekat yang tersedia
+    available_flights = list(flights_collection.find(query).sort('departure_time', 1).limit(10))
+    # --- AKHIR PENAMBAHAN KODE ---
+    
+    # Kirim data penerbangan ke template
+    return render_template('index.html', available_flights=available_flights)
+
 # 2. Manajemen Penerbangan
 @app.route('/admin/flights')
 @admin_required

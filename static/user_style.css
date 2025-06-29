@@ -1,44 +1,42 @@
 /* --- user_style.css --- */
 
-/* Import font Poppins dari Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* --- General Styles & Reset (untuk semua halaman user KECUALI index.html) --- */
-html {
-    scroll-behavior: smooth;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', 'Poppins', sans-serif;
-    color: #333;
-    /* --- Latar belakang sekarang biru gelap --- */
-    background-color: #1a2a3a;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* --- Hapus overlay gelap karena tidak ada background gambar --- */
-body::before {
-    content: none;
-}
-
-.main-content-section {
-    flex-grow: 1;
-}
-
+/* --- General Styles & Reset --- */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    /* Latar belakang gradien animasi untuk semua halaman user */
+    background: linear-gradient(-45deg, #0a192f, #1a2a4f, #3a2d5f, #2c3e50);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+main {
+    flex-grow: 1;
+}
+
 a {
     text-decoration: none;
-    color: #34568B; /* Warna biru konsisten */
+    color: #34568B;
     transition: color 0.3s ease;
 }
 
@@ -46,168 +44,65 @@ a:hover {
     color: #2a416a;
 }
 
-/* --- Global Container (untuk halaman selain index.html) --- */
+/* --- Global Container (untuk halaman selain index) --- */
 .container {
     width: 90%;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto 40px; /* Tambah margin-top agar tidak tertutup navbar */
     background-color: #fff;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
-/* --- Perbarui gaya container untuk form login --- */
-.container {
-    background-color: rgba(255, 255, 255, 0.95); /* Sedikit transparan agar latar belakang gelap terlihat */
-    backdrop-filter: blur(10px); /* Efek blur */
+
+
+/* --- Navbar --- */
+header.main-page-header {
+    background-color: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    max-width: 500px;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Bayangan lebih gelap */
-    margin-top: 5vh;
-}
-
-
-/* --- Header / Navbar untuk semua halaman user --- */
-/* --- Perbaiki tampilan navbar untuk background solid --- */
-header {
-    background-color: #0a192f; /* Ubah warna menjadi biru tua solid */
-    backdrop-filter: none; /* Hapus efek blur */
-    -webkit-backdrop-filter: none;
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Bayangan lebih gelap */
-    border-bottom: none; /* Hapus border */
-    position: sticky;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    position: fixed; /* Ubah ke fixed agar selalu di atas */
     top: 0;
+    width: 100%;
     z-index: 1000;
     transition: all 0.5s ease;
 }
-
-/* Gaya logo baru dari index_page_style.css */
-.app-logo-brand {
-    display: flex;
-    align-items: center;
-    font-size: 1.8em;
-    font-weight: 700;
-    color: white; /* Warna logo putih agar kontras */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Efek glow */
-    text-transform: uppercase;
+.app-logo-brand, .main-page-nav ul li a, .welcome-message-text {
+    color: #fff;
 }
-
 .app-logo-brand .fa-plane {
-    margin-right: 8px;
-    font-size: 1.2em;
-    color: white; /* Warna ikon putih */
-    transition: transform 0.5s ease;
+    color: #fff;
 }
 
-/* Efek link navigasi yang lebih dinamis */
-.main-page-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
-
-.main-page-nav ul li {
-    margin-left: 25px;
-}
-
-a.nav-link-item {
-    color: white; /* Warna link putih */
-    font-weight: 500;
-    font-size: 1.05em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 0;
-    position: relative;
-    transition: all 0.5s ease;
-}
-
-/* Efek underline yang muncul dari bawah */
-a.nav-link-item::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #F8B400; /* Warna aksen emas */
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.5s ease;
-}
-
-a.nav-link-item.active::after,
-a.nav-link-item:hover::after {
-    transform-origin: bottom left;
-    transform: scaleX(1);
-}
-
-a.nav-link-item:hover,
-a.nav-link-item.active {
-    color: #F8B400; /* Warna teks berubah saat di-hover/aktif */
-}
-
-/* Transisi warna ikon */
-a.nav-link-item .fas {
-    font-size: 1.2em;
-    color: white; /* Warna ikon putih */
-    transition: color 0.5s ease;
-}
-
-a.nav-link-item:hover .fas,
-a.nav-link-item.active .fas {
-    color: #F8B400; /* Mengubah warna ikon saat hover/aktif */
-}
-
-/* Gaya untuk pesan pengguna di navbar */
-.welcome-message-text {
-    color: white; /* Warna teks Halo putih */
-    font-weight: 600;
-    font-size: 1.05em;
-    margin-right: 25px;
-    margin-left: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.5s ease;
-}
 
 /* --- Hero Section untuk index.html --- */
 .main-hero-area {
     position: relative;
-    height: 600px;
+    height: 75vh;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     color: #fff;
-    border-radius: 0 0 12px 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    background: none;
-    background-position: center bottom;
-    z-index: 0;
-    padding-top: 80px;
+    /* Ganti dengan gambar latar yang sesuai */
+    background-image: url('https://images.unsplash.com/photo-1524122192629-8488337958ce?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
 }
 
-/* Overlay gelap sekarang pada ::before dari main-hero-area */
 .main-hero-area::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Overlay gelap */
     z-index: 1;
 }
 
@@ -215,411 +110,152 @@ a.nav-link-item.active .fas {
     position: relative;
     z-index: 2;
     padding: 0 20px;
-    max-width: 900px;
+    max-width: 950px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100%;
 }
 
-/* Animasi untuk judul hero */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 .animated-heading {
+    font-size: 3.5em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
     animation: fadeInUp 1s ease-out;
 }
 
-.hero-overlay-content h1 {
-    font-size: 3.2em;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Search Form untuk index.html (TERINTEGRASI & DINAMIS) --- */
+/* --- Search Form (Glassmorphism) --- */
 .search-module-integrated {
-    width: 90%;
-    max-width: 950px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 25px;
     z-index: 4;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeInUp 1.2s ease-out; /* Animasi fade-in untuk form */
-    animation-delay: 0.3s;
+    animation: fadeInUp 1s ease-out 0.3s;
     animation-fill-mode: backwards;
 }
 
 .search-tabs {
     display: flex;
-    width: 100%;
-    justify-content: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
     margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding: 0 10px;
 }
 
 .tab-item {
     padding: 12px 20px;
-    font-size: 1em;
     font-weight: 600;
-    color: #555;
+    color: rgba(255,255,255,0.7);
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 8px;
     border-bottom: 3px solid transparent;
-    margin-bottom: -1px;
-}
-
-.tab-item:hover {
-    color: #007bff;
 }
 
 .tab-item.active {
-    color: #007bff;
-    border-bottom-color: #007bff;
-}
-
-.search-form-container-integrated {
-    width: 100%;
+    color: #fff;
+    border-bottom-color: #4a90e2;
 }
 
 .search-input-form-integrated {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-end; /* Memastikan input sejajar di bagian bawah */
-    justify-content: space-between;
+    align-items: center;
     gap: 15px;
-    width: 100%;
 }
-
-/* === GAYA BARU UNTUK INPUT YANG LEBIH DINAMIS (FLOATING LABEL) === */
 
 .input-field-group-integrated {
     position: relative;
     flex: 1;
     min-width: 200px;
-    height: 55px;
-    background-color: #f7f9fc;
-    border-radius: 8px;
-    border: 1px solid #e0e6ed;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.input-field-group-integrated:focus-within {
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
 }
 
 .input-field-group-integrated input {
     width: 100%;
-    height: 100%;
-    border: none;
-    padding: 18px 45px 0 15px;
-    background: transparent;
-    color: #333;
-    font-size: 0.95em;
-    font-family: inherit;
+    height: 55px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 14px 20px 0 50px;
+    background: rgba(0,0,0,0.2);
+    color: #fff;
+    font-size: 1em;
+    border-radius: 8px;
     outline: none;
-    position: relative;
-    z-index: 2;
+    transition: border-color 0.3s;
 }
 
-/* Chrome/Edge/Safari - Hapus autofill background color */
-.input-field-group-integrated input:-webkit-autofill,
-.input-field-group-integrated input:-webkit-autofill:hover,
-.input-field-group-integrated input:-webkit-autofill:focus,
-.input-field-group-integrated input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #f7f9fc inset !important;
-    -webkit-text-fill-color: #333 !important;
+.input-field-group-integrated input:focus {
+    border-color: #4a90e2;
 }
 
 .input-field-group-integrated label {
     position: absolute;
-    left: 16px;
+    left: 50px;
     top: 50%;
     transform: translateY(-50%);
-    color: #6c757d;
-    font-size: 0.95em;
+    color: rgba(255,255,255,0.6);
     pointer-events: none;
     transition: all 0.2s ease-in-out;
-    z-index: 1;
 }
 
-/* EFEK FLOATING LABEL (STATE AKTIF) */
 .input-field-group-integrated input:focus + label,
-.input-field-group-integrated input:not(:placeholder-shown) + label,
-/* Untuk date input yang sudah diisi */
-.input-field-group-integrated input[type="date"][data-date]:not([data-date=""]) + label {
+.input-field-group-integrated input:not(:placeholder-shown) + label {
     top: 10px;
-    font-size: 0.7em;
-    font-weight: 600;
-    color: #007bff;
-    transform: translateY(0);
+    font-size: 0.75em;
+    color: #4a90e2;
 }
-/* Paksa label date input untuk selalu melayang saat di-focus */
-.input-field-group-integrated input[type="date"]:focus + label {
-    top: 10px;
-    font-size: 0.7em;
-    font-weight: 600;
-    color: #007bff;
-    transform: translateY(0);
-}
-
 
 .input-field-group-integrated .fas {
     position: absolute;
-    right: 15px;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
-    font-size: 1.1em;
-    z-index: 3;
-    transition: color 0.2s ease;
-}
-
-.input-field-group-integrated:focus-within .fas {
-    color: #007bff;
-}
-
-.input-field-group-integrated.separator-arrow {
-    flex-grow: 0;
-    flex-basis: 40px;
-    text-align: center;
-    border: none;
-    box-shadow: none;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.input-field-group-integrated.separator-arrow .fas {
-    position: static;
-    transform: none;
-    color: #888;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-.input-field-group-integrated.separator-arrow .fas:hover {
-    transform: rotate(180deg);
-}
-
-/* === Perbaikan ikon kalender ganda === */
-/* Sembunyikan ikon kalender bawaan untuk input tanggal di browser WebKit (Chrome/Safari) */
-.input-field-group-integrated input[type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    cursor: pointer;
-    z-index: 10;
+    color: rgba(255,255,255,0.6);
 }
 
 .search-action-button-integrated {
-    background: linear-gradient(to right, #007bff, #0056b3);
+    background: linear-gradient(45deg, #4a90e2, #2e5c9b);
     color: white;
     padding: 0 30px;
+    height: 55px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.1em;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-    flex-shrink: 0;
-    height: 55px;
-    min-width: 150px;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
 }
-
 .search-action-button-integrated:hover {
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
 }
 
-/* --- Bagian Promo Maskapai Unggulan --- */
+/* --- Promo Section --- */
 .promo-airlines-section {
     width: 90%;
     max-width: 1200px;
-    margin: 40px auto;
-    padding: 25px;
-    background-color: #ffffff;
+    margin: -80px auto 40px; /* Tarik ke atas agar sedikit overlap */
+    padding: 40px 25px;
+    background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
-
-.promo-header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.promo-header-container h2 {
-    font-size: 2em;
-    color: #34568B;
-    margin: 0;
-}
-
-.view-all-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-    color: #34568B;
-}
-
-.view-all-link:hover {
-    text-decoration: underline;
-}
-
-.promo-cards-carousel {
-    display: flex;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    gap: 20px;
-    padding-bottom: 15px;
-}
-
-/* Sembunyikan scrollbar di WebKit browsers (Chrome, Safari) */
-.promo-cards-carousel::-webkit-scrollbar {
-    height: 8px;
-}
-
-.promo-cards-carousel::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.promo-cards-carousel::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
-
-.promo-cards-carousel::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-
-.promo-card {
-    flex-shrink: 0;
-    width: 280px;
-    height: 350px;
-    border-radius: 12px;
-    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    scroll-snap-align: start;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    background-color: #f0f2f5;
-    animation: fadeInUp 0.8s ease-out;
-    animation-fill-mode: backwards;
-}
-/* Tambahkan delay untuk setiap kartu untuk efek staggered */
-.promo-card:nth-child(1) { animation-delay: 0.1s; }
-.promo-card:nth-child(2) { animation-delay: 0.2s; }
-.promo-card:nth-child(3) { animation-delay: 0.3s; }
-.promo-card:nth-child(4) { animation-delay: 0.4s; }
-.promo-card:nth-child(5) { animation-delay: 0.5s; }
-
-
-.promo-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    z-index: 5;
 }
 
-.promo-card-bg-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-.promo-card-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
-    z-index: 1;
-}
-
-.promo-book-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: #F8B400;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    font-weight: 600;
-    z-index: 3;
-    transition: background-color 0.2s ease;
-}
-
-.promo-book-button:hover {
-    background-color: #e0a800;
-}
-
-.promo-card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    color: white;
-    z-index: 2;
-}
-
-.promo-card-content h3 {
-    font-size: 1.4em;
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-weight: 700;
-}
-
-.promo-card-content p {
-    font-size: 0.9em;
-    margin-bottom: 0;
-}
-
-
-/* --- Flight Cards (Styles for All Flights & Search Results) --- */
+/* --- Flight Cards (Search Result) --- */
 .flight-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 25px;
-    padding: 0;
-    list-style: none;
 }
 
 .flight-card {
@@ -629,337 +265,122 @@ a.nav-link-item.active .fas {
     padding: 25px 30px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 20px;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    animation: fadeInUp 0.5s ease-out;
-    animation-fill-mode: backwards;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
-/* Efek staggered animation untuk kartu penerbangan */
-.flight-card:nth-child(1) { animation-delay: 0.1s; }
-.flight-card:nth-child(2) { animation-delay: 0.2s; }
-.flight-card:nth-child(3) { animation-delay: 0.3s; }
-.flight-card:nth-child(4) { animation-delay: 0.4s; }
-.flight-card:nth-child(5) { animation-delay: 0.5s; }
-
-
 .flight-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
 }
 
-.airline-info {
-    display: flex;
-    flex-direction: column;
+/* --- Refined Search Form Styles for index.html --- */
+
+.search-module-integrated {
+    background: #2D3748; /* Warna latar lebih gelap dan solid */
+    /* Menghapus efek glassmorphism agar sesuai gambar */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid #4A5568;
+    padding: 20px 25px;
+    border-radius: 16px;
+}
+
+.search-tabs .tab-item {
+    color: #A0AEC0; /* Warna tab yang tidak aktif */
+}
+
+.search-tabs .tab-item.active {
+    color: #FFFFFF; /* Warna tab aktif putih */
+    border-bottom-color: #3182CE; /* Warna biru untuk underline */
+}
+
+/* --- Menggunakan CSS Grid untuk layout form presisi --- */
+.search-input-form-integrated {
+    display: grid;
+    /* Definisikan 5 kolom: Dari, panah, Ke, Tanggal, Tombol */
+    grid-template-columns: 1fr auto 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 15px;
     align-items: center;
-    min-width: 100px;
-    text-align: center;
-    margin-right: 15px;
 }
 
-.airline-logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    margin-bottom: 8px;
-    border-radius: 50%;
-    background-color: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2em;
-    color: #34568B;
-}
-
-.airline-name {
-    font-weight: 600;
-    color: #333;
-    font-size: 0.9em;
-}
-
-.flight-details-main {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.flight-time-route {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-.flight-time-route .time {
-    font-size: 1.8em;
-    font-weight: 700;
-    color: #34568B;
-}
-
-.flight-time-route .airport {
-    font-size: 0.9em;
-    font-weight: 500;
-    color: #666;
-    margin-top: 2px;
-}
-
-.flight-duration-stop {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 0.85em;
-    color: #888;
-    position: relative;
-    padding: 0 10px;
-}
-
-.flight-duration-stop .duration {
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.flight-duration-stop .line {
-    width: 100px;
-    height: 2px;
-    background-color: #ddd;
-    border-radius: 1px;
+.input-field-group-integrated {
     position: relative;
 }
 
-.flight-duration-stop .line::before,
-.flight-duration-stop .line::after {
-    content: '';
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: #34568B;
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
+/* Penyesuaian gaya input field */
+.input-field-group-integrated input {
+    background-color: #4A5568;
+    border: 1px solid #4A5568;
+    color: #FFFFFF;
+    height: 50px;
+    padding-left: 45px;
+    border-radius: 10px;
 }
 
-.flight-duration-stop .line::before {
-    left: -4px;
+.input-field-group-integrated input:focus {
+    border-color: #3182CE;
+    background-color: #2D3748;
 }
 
-.flight-duration-stop .line::after {
-    right: -4px;
+/* Ikon di dalam input */
+.input-field-group-integrated .fas {
+    left: 15px;
+    color: #A0AEC0;
 }
 
-.flight-duration-stop .stop-info {
-    font-weight: 500;
-    margin-top: 5px;
+/* Floating label */
+.input-field-group-integrated label {
+    left: 45px;
+    color: #A0AEC0;
+}
+.input-field-group-integrated input:focus + label,
+.input-field-group-integrated input:not(:placeholder-shown) + label {
+    color: #3182CE;
 }
 
-.flight-price-action {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    min-width: 150px;
-}
 
-.flight-price {
-    font-size: 1.8em;
-    font-weight: 700;
-    color: #F8B400;
-    margin-bottom: 10px;
-}
-
-.flight-price small {
-    font-size: 0.5em;
-    font-weight: 400;
-    color: #666;
-}
-
-.choose-button {
-    background-color: #34568B;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
+/* Ikon panah pemisah */
+.separator-arrow {
+    grid-column: 2 / 3; /* Tempatkan di kolom kedua */
+    text-align: center;
     cursor: pointer;
-    font-size: 1.1em;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(52, 86, 139, 0.3);
-    text-align: center;
-    width: 100%;
-    max-width: 150px;
+}
+.separator-arrow .fas {
+    color: #A0AEC0;
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+.separator-arrow .fas:hover {
+    transform: rotate(180deg);
 }
 
-.choose-button:hover {
-    background-color: #2a416a;
+/* Tombol Cari Tiket */
+.search-action-button-integrated {
+    grid-column: 4 / 5; /* Tempatkan di kolom keempat */
+    background: #3182CE; /* Warna biru solid */
+    box-shadow: 0 4px 15px rgba(49, 130, 206, 0.3);
+    height: 50px;
+    font-size: 1em;
+    font-weight: 500;
+}
+.search-action-button-integrated:hover {
+    background: #2B6CB0;
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-    .flight-card {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-    }
-    .airline-info {
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 15px;
-        min-width: unset;
-    }
-    .airline-logo {
-        margin-right: 15px;
-        margin-bottom: 0;
-    }
-    .flight-details-main {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        gap: 15px;
-        margin-bottom: 15px;
-    }
-    .flight-time-route {
-        text-align: left;
-    }
-    .flight-duration-stop {
-        width: 100%;
-        padding: 0;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .flight-duration-stop .line {
-        flex-grow: 1;
-        width: auto;
-        margin: 0 10px;
-    }
-    .flight-price-action {
-        width: 100%;
-        align-items: flex-start;
-    }
-    .choose-button {
-        width: 100%;
-        max-width: unset;
-    }
-
-    /* Form umum adjustment for tablet (bukan search form di index) */
-    form {
-        max-width: 95%;
-    }
-    /* Tambahan untuk responsivitas form pencarian */
-    .search-input-form-integrated {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 25px;
-    }
-    .input-field-group-integrated {
-        min-width: unset;
-        width: 100%;
-    }
-    .input-field-group-integrated.separator-arrow {
-        display: none;
-    }
-    .search-action-button-integrated {
-        min-width: unset;
-        width: 100%;
-    }
-
-    /* Search form di cari_jadwal.html */
-    .search-form-container {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 25px;
-    }
-    .input-field-group {
-        min-width: unset;
-        flex-basis: 100%;
-    }
-    .search-action-button {
-        min-width: unset;
-        width: 100%;
-        max-width: unset;
-        margin-left: 0;
-    }
-}
-
-
+/* Penyesuaian untuk layar lebih kecil */
 @media (max-width: 768px) {
-    .container {
-        width: 95%;
-        margin: 15px auto;
-        padding: 20px;
-    }
-    .flashes {
-        width: 95%;
-        padding: 10px 15px;
-    }
-
-    header {
-        flex-direction: column;
-        padding: 10px 5%;
-        text-align: center;
-    }
-
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    nav ul li {
-        margin: 5px 10px;
-    }
-    /* Sesuaikan tampilan hero section dan form pencarian di mobile */
-    .main-hero-area {
-        height: auto;
-        min-height: 70vh;
-        border-radius: 0;
-        padding-bottom: 30px;
-    }
-
-    .hero-overlay-content h1 {
-        font-size: 2.5em;
-    }
-
-    .search-module-integrated {
-        padding: 15px;
-        margin-top: 15px;
-    }
-
-    /* Promo section mobile adjustments */
-    .promo-airlines-section {
-        margin: 20px auto;
-        padding: 15px;
-    }
-    .promo-header-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .promo-header-container h2 {
-        font-size: 1.5em;
-    }
-    .promo-cards-carousel {
-        gap: 15px;
-    }
-    .promo-card {
-        width: 220px;
-        height: 300px;
-    }
-    .promo-card-content {
-        padding: 15px;
-    }
-    .promo-card-content h3 {
-        font-size: 1.2em;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-overlay-content h1 {
-        font-size: 2em;
-    }
-    .search-module-integrated {
-        padding: 10px;
-    }
     .search-input-form-integrated {
-        gap: 10px;
+        /* Ubah menjadi 1 kolom di mobile */
+        grid-template-columns: 1fr;
+    }
+    .separator-arrow {
+        display: none; /* Sembunyikan panah di mobile */
+    }
+    .input-field-group-integrated, .search-action-button-integrated {
+        /* Setiap elemen menempati 1 baris penuh */
+        grid-column: 1 / -1;
     }
 }

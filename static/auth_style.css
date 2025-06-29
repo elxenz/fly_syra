@@ -1,0 +1,306 @@
+/* --- auth_style.css --- */
+/* Gaya khusus untuk halaman Login dan Register */
+
+/* Import font Poppins dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- General Styles & Reset --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #fff; /* Warna teks default putih */
+    height: 100%;
+    overflow: hidden; /* Mencegah scroll pada body */
+}
+
+body {
+    background: linear-gradient(-45deg, #0a192f, #1a2a4f, #3a2d5f, #2c3e50);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Animasi untuk latar belakang gradien */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+a {
+    text-decoration: none;
+    color: #4a90e2;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #81baff;
+}
+
+/* --- Navbar --- */
+/* Anda dapat menyalin gaya navbar dari user_style.css jika ingin navbar tetap sama, */
+/* atau buat gaya minimalis seperti di bawah ini. */
+header.main-page-header {
+    background: transparent;
+    box-shadow: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 5%;
+    z-index: 1001;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-logo-brand {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.app-logo-brand .fa-plane {
+    margin-right: 10px;
+}
+
+.main-page-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-page-nav ul li {
+    margin-left: 25px;
+}
+
+.main-page-nav ul li a {
+    color: white;
+    font-weight: 500;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+
+/* --- Kontainer Utama untuk Form --- */
+main.auth-main-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 60px; /* Ruang untuk navbar */
+}
+
+/* --- Desain Split Container dengan Efek Glassmorphism --- */
+.split-container {
+    display: flex;
+    width: 90%;
+    max-width: 900px;
+    min-height: 600px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Panel Kiri (Informasi) & Panel Kanan (Form) --- */
+.left-panel, .right-panel {
+    padding: 60px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.left-panel {
+    flex-basis: 45%;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.right-panel {
+    flex-basis: 55%;
+}
+
+.left-panel h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.left-panel p {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.right-panel h2 {
+    font-size: 2em;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.right-panel .subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+}
+
+/* --- Styling Form Input --- */
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.form-group .form-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 15px 15px 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1em;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-group input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #81baff;
+}
+
+.form-group input:focus + .form-icon {
+    color: #81baff;
+}
+
+/* --- Opsi Form & Tombol --- */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    margin-bottom: 25px;
+}
+
+.form-options label {
+    cursor: pointer;
+}
+
+.form-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-btn-primary {
+    background: linear-gradient(45deg, #4a90e2, #2e5c9b);
+    color: white;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+}
+
+.form-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+}
+
+.form-btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    margin-top: 15px;
+}
+
+.form-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- Link Bawah & Flash Messages --- */
+.bottom-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.95em;
+}
+
+.bottom-link a {
+    font-weight: 600;
+}
+
+.flashes {
+    list-style: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.flashes .success {
+    background-color: rgba(45, 206, 137, 0.8);
+    color: white;
+}
+
+.flashes .error {
+    background-color: rgba(245, 54, 92, 0.8);
+    color: white;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 850px) {
+    .split-container {
+        flex-direction: column;
+        width: 95%;
+        max-width: 500px;
+        min-height: auto;
+    }
+    .left-panel {
+        display: none; /* Sembunyikan panel kiri agar fokus ke form */
+    }
+    .right-panel {
+        padding: 40px 30px;
+    }
+}

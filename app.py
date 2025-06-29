@@ -45,7 +45,20 @@ def admin_required(f):
 # Rute Halaman Utama (Beranda)
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Ambil waktu saat ini
+    now = datetime.now()
+    
+    # Query untuk mencari penerbangan yang akan datang dan masih tersedia
+    query = {
+        'departure_time': {'$gt': now},
+        'available_seats': {'$gt': 0}
+    }
+    
+    # Ambil 10 penerbangan terdekat yang tersedia
+    available_flights = list(flights_collection.find(query).sort('departure_time', 1).limit(10))
+    
+    # Kirim data penerbangan ke template
+    return render_template('index.html', available_flights=available_flights)
 
 # Rute Registrasi Pengguna
 @app.route('/register', methods=['GET', 'POST'])
@@ -138,7 +151,7 @@ def search_flights():
         # Buat rentang waktu untuk mencari penerbangan di seluruh hari itu
         end_of_day = departure_date + timedelta(days=1)
     except ValueError:
-        flash('Format tanggal tidak valid. Gunakanんですね-MM-DD.', 'error')
+        flash('Format tanggal tidak valid. Gunakan YYYY-MM-DD.', 'error')
         return redirect(url_for('cari_jadwal')) # Redirect ke halaman cari_jadwal jika format tanggal salah
 
     # Query MongoDB untuk mencari penerbangan

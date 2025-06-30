@@ -291,14 +291,23 @@ def admin_edit_flight(flight_id):
                 'total_seats': int(request.form['total_seats']),
                 'price': float(request.form['price'])
             }
+            # Logika untuk menyesuaikan available_seats jika total_seats berubah
+            old_total_seats = flight.get('total_seats', 0)
+            old_available_seats = flight.get('available_seats', 0)
+            new_total_seats = updated_data['total_seats']
+            seats_diff = new_total_seats - old_total_seats
+            updated_data['available_seats'] = old_available_seats + seats_diff
+
             flights_collection.update_one({'_id': ObjectId(flight_id)}, {'$set': updated_data})
             flash('Data penerbangan berhasil diperbarui.', 'success')
             return redirect(url_for('admin_flights'))
         except Exception as e:
             flash(f'Gagal memperbarui data: {e}', 'error')
     
+    # Format tanggal agar bisa dibaca oleh input type="datetime-local"
     flight['departure_time_str'] = flight['departure_time'].strftime('%Y-%m-%dT%H:%M')
     flight['arrival_time_str'] = flight['arrival_time'].strftime('%Y-%m-%dT%H:%M')
+    
     return render_template('admin_edit_flight.html', flight=flight)
 
 @app.route('/admin/flights/delete/<flight_id>', methods=['POST'])
@@ -331,6 +340,11 @@ def admin_edit_user(user_id):
             'email': request.form['email'],
             'role': request.form['role']
         }
+        
+        new_password = request.form.get('password')
+        if new_password:
+            updated_data['password'] = hash_password(new_password)
+
         users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': updated_data})
         flash('Data pengguna berhasil diperbarui.', 'success')
         return redirect(url_for('admin_users'))
@@ -349,8 +363,49 @@ def admin_delete_user(user_id):
 @app.route('/admin/bookings')
 @admin_required
 def admin_bookings():
-    all_bookings = list(bookings_collection.find().sort('booking_date', -1))
-    # Anda bisa menambahkan join/lookup data user dan flight di sini jika perlu
+    # Menggunakan Aggregation Pipeline untuk menggabungkan data
+    pipeline = [
+        {
+            # Langkah 1: Gabungkan dengan koleksi 'flights'
+            '$lookup': {
+                'from': 'flights',
+                'localField': 'flight_id',
+                'foreignField': '_id',
+                'as': 'flight_details'
+            }
+        },
+        {
+            # Langkah 2: Gabungkan dengan koleksi 'users'
+            '$lookup': {
+                'from': 'users',
+                'localField': 'user_id',
+                'foreignField': '_id',
+                'as': 'user_details'
+            }
+        },
+        {
+            # "Unwind" untuk mengubah array hasil lookup menjadi objek tunggal
+            # preserveNullAndEmptyArrays memastikan booking tetap tampil meskipun user/flight telah dihapus
+            '$unwind': {
+                'path': '$flight_details',
+                'preserveNullAndEmptyArrays': True
+            }
+        },
+        {
+            '$unwind': {
+                'path': '$user_details',
+                'preserveNullAndEmptyArrays': True
+            }
+        },
+        {
+            # Urutkan berdasarkan tanggal pemesanan terbaru
+            '$sort': {'booking_date': -1}
+        }
+    ]
+    
+    # Jalankan pipeline aggregasi
+    all_bookings = list(bookings_collection.aggregate(pipeline))
+    
     return render_template('admin_bookings.html', bookings=all_bookings)
 
 # =======================================================================
